@@ -1,44 +1,52 @@
 import React from "react";
+import styled from '@emotion/styled'
 import {PulseLoader} from "react-spinners";
-const style = {
-    card: {
-        width:"120px",
-        cursor:"pointer",
-        float:"left",
-        height:"65px",
-        color:"#FFF",
-        verticalAlign:"bottom",
-        position:"relative",
-        border:"solid 7px white",
-        listStyleType:"none",
-        padding:"0"
-    },
-    card_text: {
-        position:"absolute",
-        bottom:"0",
-        fontWeight:"bold",
-        left:"3px",
-        textShadow: "0px 0px 2px #0a0a0a",
-        fontSize:"13px"
-    },
-};
+
+const CardList = styled.ol`
+    padding:0;
+    margin:0;
+`;
+
+CardList.Item = styled.div`
+    width: 120px;
+    cursor: pointer;
+    float: left;
+    height: 65px;
+    color: #FFF;
+    vertical-align: bottom;
+    position: relative;
+    border: solid 7px white;
+    list-style-type: none;
+    padding: 0;
+    color: ${props => props.isSelected ? "blue" : "#333"};
+    background: ${props => props.imageBackground};
+`;
+
+CardList.ItemText = styled.div`
+    position: absolute;
+    bottom: 0;
+    font-weight: bold;
+    left: 3px;
+    text-shadow: 0px 0px 2px #0a0a0a;
+    font-size: 13px;
+    color:#F3F3F3;
+`;
+    
 export function HeroList({isLoading, results, loadGuide: onLoadGuide, selectedHero}) {
     return (
         <React.Fragment>
             {isLoading && <h1 style={{textAlign: "center"}}><PulseLoader color="#FFF"/></h1>}
-            <ol style={{padding: "0", margin: "0"}}>
+            <CardList>
                 {results.map(hero => (
-                    <li key={hero.name}
-                        style={{
-                            ...style.card,
-                            background: hero.image,
-                            borderColor: hero.name === selectedHero ? "blue" : "#333"
-                        }}
+                    <CardList.Item 
+                        key={hero.name}
+                        imageBackground={hero.image}
+                        isSelected={hero.name === selectedHero}
                         onClick={() => onLoadGuide(hero.name)}>
-                        <span style={style.card_text}>{hero.name}</span>
-                    </li>
+                        <CardList.ItemText>{hero.name}</CardList.ItemText>
+                    </CardList.Item>
                 ))}
-            </ol>
+            </CardList>
         </React.Fragment>
     );
 }
