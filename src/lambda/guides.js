@@ -72,7 +72,8 @@ const getPage = async (page, hero) => {
 				name: $(el)
 						.find("a")
 						.attr("href")
-						.substring(7), 
+						.substring(7)
+						.replace("-", " "), 
 				image: $(el)
 						.find("img")
 						.attr("src")

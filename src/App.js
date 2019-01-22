@@ -23,7 +23,12 @@ const style = {
         left:"0",
         textShadow: "0px 0px 2px #0a0a0a",
         fontSize:"13px"
+    },
+    item_image: {
+        width: "30px",
+        height:"30px"
     }
+    
 
 };
 
@@ -72,6 +77,8 @@ class App extends Component {
                 <ol>
                     {this.state.results.map(item => (
                         <li key={item.name}>
+                            <img src={item.image}
+                                    style={style.item_image}/>
                             {item.name} = {item.count}
                         </li>
                     ))}
