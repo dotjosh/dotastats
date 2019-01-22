@@ -51,6 +51,7 @@ Section.Column = styled.td`
 
 const ItemImage = styled.img`
     width:36px;
+    height:26px;
 `;
 
 Section.Link = styled.a`
