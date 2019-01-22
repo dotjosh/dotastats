@@ -61,63 +61,56 @@ const style = {
         width: "30px",
         height:"30px",
     }
-    
+};
 
+const defaultState = {
+    items: {
+        results: [],
+        isLoading: false
+    },
+    heroes: {
+        results: [],
+        isLoading: false
+    },
+    selectedHero: null
 };
 
 class App extends Component {
     constructor(props) {
-        super(props)
-        this.state = {
-            results: [],
-            heroes: []
-        };
-        api.getHeroes()
-            .then(json => 
-                this.setState({
-                    heroes: json.result
-                })
-            );
+        super(props);
+        this.state = defaultState;
+    }
+    
+    componentDidMount(){
+        this.loadHeroes();
     }
 
-    loadHero = (hero) =>{
-        this.setState({
-            isLoading: true,
-            hero
-        });
-        api.getGuide(hero)
-            .then(json =>
-                this.setState({
-                    results: json.result, 
-                    isLoading: false
-                })
-            );
-    };
-
     render() {
+        const { heroes, items, selectedHero } = this.state;
         return (
             <div style={style.container}>
                 <div style={style.leftPanel}>
+                    {heroes.isLoading && <h1 style={{textAlign:"center"}}><PulseLoader color="#FFF"/></h1>}
                     <ol style={{padding:"0", margin:"0"}}>
-                        {this.state.heroes.map(hero => (
+                        {heroes.results.map(hero => (
                             <li key={hero.name} 
-                                style={{...style.card, background: hero.image, borderColor: hero.name === this.state.hero ? "blue" : "#333"}}
-                                onClick={() => this.loadHero(hero.name)}>
+                                style={{...style.card, background: hero.image, borderColor: hero.name === selectedHero ? "blue" : "#333"}}
+                                onClick={() => this.loadGuide(hero.name)}>
                                 <span style={style.card_text}>{hero.name}</span>
                             </li>
                         ))}
                     </ol>
                 </div>
                 <div style={style.rightPanel}>
-                    {this.state.isLoading 
-                        ? <h1 style={{paddingLeft:"20px"}}>{this.state.hero} <PulseLoader/></h1>
-                        : <h1 style={{paddingLeft:"20px"}}>{this.state.hero}</h1>
+                    {items.isLoading 
+                        ? <h1 style={{paddingLeft:"20px"}}>{selectedHero} <PulseLoader/></h1>
+                        : <h1 style={{paddingLeft:"20px"}}>{selectedHero}</h1>
                     }
-                    {(!this.state.isLoading && this.state.hero)  && (
+                    {(!items.isLoading && selectedHero)  && (
                         <VictoryChart height={300} width={700} labelComponent={<CustomLabel />}>
                             <VictoryBar 
                                         
-                                data={this.state.results.slice(0, 10).map(item  => ({
+                                data={items.results.slice(0, 10).map(item  => ({
                                     x: item.name, 
                                     y: item.count
                                 }))}
@@ -148,6 +141,43 @@ class App extends Component {
             </div>
         )
     }
+    
+    loadGuide = (selectedHero) =>{
+        this.setState({
+            items: {
+                results: [],
+                isLoading: true,
+            },
+            selectedHero
+        });
+        api.getGuide(selectedHero)
+            .then(json =>
+                this.setState({
+                    items: {
+                        results: json.result,
+                        isLoading: false
+                    }
+                })
+            );
+    };
+
+    loadHeroes = () => {
+        this.setState({
+            heroes: {
+                results: [],
+                isLoading: true
+            }
+        });
+        api.getHeroes()
+            .then(json =>
+                this.setState({
+                    heroes: {
+                        results: json.result,
+                        isLoading: false
+                    }
+                })
+            );
+    };
 }
 class CustomLabel extends React.Component {
     render() {
