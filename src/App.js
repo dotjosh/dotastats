@@ -106,7 +106,7 @@ class App extends Component {
                     {(!items.isLoading && selectedHero)  && (
                         <article style={{background:"rgb(36, 47, 57)", maxWidth:"972px", padding:"6px 15px"}}>
                             
-                            <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>ITEM PICKS BASED ON TOP {guideCount} GUIDES</h3>
+                            <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>FINAL ITEMS BASED ON TOP {guideCount} GUIDES</h3>
                             <table cellPadding="0" cellSpacing="0" style={{width:"auto"}}>
                                 <thead>
                                     <tr>
