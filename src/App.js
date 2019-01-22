@@ -70,9 +70,9 @@ class App extends Component {
                 <div style={{clear:"both"}}/>
                 {this.state.isLoading && <h3>LOADING...</h3>}
                 <ol>
-                    {this.state.results.map(result => (
-                        <li key={result.name}>
-                            {result.item} = {result.count}
+                    {this.state.results.map(item => (
+                        <li key={item.name}>
+                            {item.name} = {item.count}
                         </li>
                     ))}
                 </ol>

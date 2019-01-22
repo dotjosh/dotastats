@@ -23,20 +23,31 @@ exports.handler = async (event, context) => {
 	});
 	
 	const aggregated = finalResult.reduce((agg, val) => {
-		if(agg[val]){
-			agg[val]++;
+		let existing = agg[val.name];
+		if(existing){
+			existing.count++;
 		}
 		else {
-			agg[val] = 1;
+			agg[val.name] = {
+				name: val.name,
+				count: 1,
+				image: val.image
+			};
 		}
 		
 		return agg;
 	}, {});
 	
 	const aggregatedArray = Object.keys(aggregated)
-									.map(key => ({ item: key, count: aggregated[key] }));
+									.map(key => ({ 
+										name: key, 
+										count: aggregated[key].count,
+										image: aggregated[key].image
+									}));
 	
-	const sortedArray = orderBy(aggregatedArray, ['count'], ['desc'])
+	console.log(aggregatedArray)
+	
+	const sortedArray = orderBy(aggregatedArray, ['count'], ['desc']);
 	
 	return {
     statusCode: 200,
@@ -48,13 +59,21 @@ exports.handler = async (event, context) => {
         "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
     },
   };
-};
+};	
 
 const getPage = async (page, hero) => {
 	const response = await fetch(`https://www.dotabuff.com/heroes/${hero}/guides`);
 	const html = await response.text();
 	const $ = cheerio.load(html);
-	return $("div.image-container-medicon a").get()
-			.map(el => $(el).attr("href"))
-			.map(href => href.substring(7));
-}
+	return $("div.image-container.image-container-item.image-container-medicon").get()
+			.map(el => ({
+				name: $(el)
+						.find("a")
+						.attr("href")
+						.substring(7), 
+				image: $(el)
+						.find("img")
+						.attr("src")
+						.replace("/assets", "https://www.dotabuff.com/assets")
+			}));
+};
