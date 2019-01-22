@@ -130,7 +130,7 @@ class App extends Component {
 
                                 labels={(d) => Math.round((d.y/20)*100) + '%'}
                             />
-                            <VictoryAxis tickLabelComponent={<CustomLabel data={this.state.results}/>}/>
+                            <VictoryAxis tickLabelComponent={<CustomLabel data={items.results}/>}/>
                             
                             <VictoryAxis 
                                          
@@ -182,7 +182,6 @@ class App extends Component {
 class CustomLabel extends React.Component {
     render() {
         const { data, text, x, y } = this.props;
-            console.log(this.props)
         let find = data.find(x => x.name === text);
         var img = find && find.image;
         return <image x={x-25} y={y-8} href={img} height="50px" width="50px"/>;
