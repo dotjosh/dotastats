@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryPie, VictoryChart, VictoryLabel, VictoryAxis } from 'victory';
 
+import { PulseLoader } from 'react-spinners';
+
 const api = {
     getHeroes: () => fetch("/.netlify/functions/heroes")
                     .then(resp => resp.json()),
@@ -108,7 +110,7 @@ class App extends Component {
                 </div>
                 <div style={style.rightPanel}>
                     {this.state.isLoading 
-                        ? <h1 style={{paddingLeft:"20px"}}>{this.state.hero} (LOADING...)</h1>
+                        ? <h1 style={{paddingLeft:"20px"}}>{this.state.hero} <PulseLoader/></h1>
                         : <h1 style={{paddingLeft:"20px"}}>{this.state.hero}</h1>
                     }
                     {(!this.state.isLoading && this.state.hero)  && (
