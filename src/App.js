@@ -7,6 +7,26 @@ const api = {
                     .then(resp => resp.json())
 };
 
+const style = {
+    card: {
+        width:"120px",
+        cursor:"pointer",
+        float:"left",
+        height:"65px",
+        color:"#FFF",
+        verticalAlign:"bottom",
+        position:"relative"
+    },
+    card_text: {
+        position:"absolute",
+        bottom:"0",
+        left:"0",
+        textShadow: "0px 0px 2px #0a0a0a",
+        fontSize:"13px"
+    }
+
+};
+
 class App extends Component {
     constructor(props) {
         super(props)
@@ -15,25 +35,35 @@ class App extends Component {
             heroes: []
         };
         api.getHeroes()
-            .then(json => this.setState({heroes: json.result}));
+            .then(json => 
+                this.setState({
+                    heroes: json.result
+                })
+            );
     }
 
     loadHero = (hero) =>{
-        this.setState({isLoading: true});
+        this.setState({
+            isLoading: true
+        });
         api.getGuide(hero)
-            .then(json =>{
-                this.setState({results: json.result, isLoading: false});
-            });
-    }
+            .then(json =>
+                this.setState({
+                    results: json.result, 
+                    isLoading: false
+                })
+            );
+    };
 
     render() {
         return (
             <div>
                 <ol>
                     {this.state.heroes.map(hero => (
-                        <li key={hero.name} style={{background: hero.image, width:"120px", cursor:"pointer", float:"left", height:"65px", color:"#FFF", verticalAlign:"bottom", position:"relative"}}
+                        <li key={hero.name} 
+                            style={{...style.card, background: hero.image}}
                             onClick={() => this.loadHero(hero.name)}>
-                            <span style={{position:"absolute", bottom:"0",left:"0", textShadow: "0px 0px 2px #0a0a0a", fontSize:"13px"}}>{hero.name}</span>
+                            <span style={style.card_text}>{hero.name}</span>
                         </li>
                     ))}
                 </ol>
@@ -50,5 +80,6 @@ class App extends Component {
         )
     }
 }
+
 
 export default App;

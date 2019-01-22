@@ -9,6 +9,7 @@ exports.handler = async (event, context) => {
 					&& event.queryStringParameters.hero 
 					&& event.queryStringParameters.hero.toLowerCase().replace(" ", "-"))
 				|| "medusa";
+	
 	const promises = [];
 	for(var page = 1; page <= 4; page++){
 		promises.push(getPage(page, hero));
