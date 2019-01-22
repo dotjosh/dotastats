@@ -114,7 +114,7 @@ class App extends Component {
                         : <h1 style={{paddingLeft:"20px"}}>{this.state.hero}</h1>
                     }
                     {(!this.state.isLoading && this.state.hero)  && (
-                        <VictoryChart height={300} width={701} labelComponent={<CustomLabel />}>
+                        <VictoryChart height={300} width={700} labelComponent={<CustomLabel />}>
                             <VictoryBar 
                                         
                                 data={this.state.results.slice(0, 10).map(item  => ({
@@ -135,9 +135,9 @@ class App extends Component {
                                     }
                                 }}
 
-                                labels={(d) => d.y}
+                                labels={(d) => Math.round((d.y/20)*100) + '%'}
                             />
-                            <VictoryAxis tickLabelComponent ={<CustomLabel data={this.state.results}/>}/>
+                            <VictoryAxis tickLabelComponent={<CustomLabel data={this.state.results}/>}/>
                             
                             <VictoryAxis 
                                          
