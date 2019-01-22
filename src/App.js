@@ -12,16 +12,18 @@ const style = {
     container: {
         display: "flex",
         flexDirection: "row",
-        height:"100%"
+        height:"100%",
+        background:"#EEE"
     },
     leftPanel: {
-        flexBasis: "200px",
+        flexBasis: "420px",
         overflowY: "scroll",
-        height:"100%"
+        height:"100%",
+        background:"#333"
     },
     rightPanel: {
         flexGrow:"2",
-        paddingLeft:"30px",
+        paddingLeft:"10px",
         paddingBottom:"90px"
     },
     rightList: {
@@ -35,7 +37,9 @@ const style = {
         color:"#FFF",
         verticalAlign:"bottom",
         position:"relative",
-        marginBottom: "3px"
+        border:"solid 7px white",
+        listStyleType:"none",
+        padding:"0"
     },
     card_text: {
         position:"absolute",
@@ -92,10 +96,10 @@ class App extends Component {
         return (
             <div style={style.container}>
                 <div style={style.leftPanel}>
-                    <ol>
+                    <ol style={{padding:"0", margin:"0"}}>
                         {this.state.heroes.map(hero => (
                             <li key={hero.name} 
-                                style={{...style.card, background: hero.image}}
+                                style={{...style.card, background: hero.image, borderColor: hero.name === this.state.hero ? "blue" : "#333"}}
                                 onClick={() => this.loadHero(hero.name)}>
                                 <span style={style.card_text}>{hero.name}</span>
                             </li>
@@ -104,8 +108,8 @@ class App extends Component {
                 </div>
                 <div style={style.rightPanel}>
                     {this.state.isLoading 
-                        ? <h3>{this.state.hero} (LOADING...)</h3>
-                        : <h3>{this.state.hero}</h3>
+                        ? <h1 style={{paddingLeft:"20px"}}>{this.state.hero} (LOADING...)</h1>
+                        : <h1 style={{paddingLeft:"20px"}}>{this.state.hero}</h1>
                     }
                     {(!this.state.isLoading && this.state.hero)  && (
                         <VictoryChart height={300} width={700} labelComponent={<CustomLabel />}>
