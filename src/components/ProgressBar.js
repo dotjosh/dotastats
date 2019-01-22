@@ -5,7 +5,7 @@ export function ProgressBar({total, value}) {
     return (
         <div style={{color: "#F3F3F3", width: "300px", fontSize: "12px"}}>
             {percentage}
-            <div style={{width: percentage, background: "#A9CF54", height: "5px"}}></div>
+            <div style={{width: percentage, background: "#A9CF54", height: "5px"}}/>
         </div>
     );
 }

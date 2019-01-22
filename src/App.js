@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
 import {HeroList} from "./components/HeroList";
 import {HeroGuide} from "./components/HeroGuide";
-
-const api = {
-    getHeroes: () => fetch("/.netlify/functions/heroes")
-                    .then(resp => resp.json()),
-    getGuide: hero => fetch(`/.netlify/functions/guides?hero=${hero}`)
-                    .then(resp => resp.json())
-};
+import api from "./api";
 
 const style = {
     container: {
@@ -27,39 +21,6 @@ const style = {
         paddingBottom:"90px",
         overflowY:"scroll"
     },
-    rightList: {
-      padding:"0"  
-    },
-    card: {
-        width:"120px",
-        cursor:"pointer",
-        float:"left",
-        height:"65px",
-        color:"#FFF",
-        verticalAlign:"bottom",
-        position:"relative",
-        border:"solid 7px white",
-        listStyleType:"none",
-        padding:"0"
-    },
-    card_text: {
-        position:"absolute",
-        bottom:"0",
-        fontWeight:"bold",
-        left:"3px",
-        textShadow: "0px 0px 2px #0a0a0a",
-        fontSize:"13px"
-    },
-
-    item: {
-        padding:"0",
-        listStyleType: "none",
-        fontSize:"12px"
-    },
-    item_image: {
-        width: "30px",
-        height:"30px",
-    }
 };
 
 const defaultState = {
@@ -93,7 +54,7 @@ class App extends Component {
                 <div style={style.leftPanel}>
                     <HeroList {...heroes} 
                               selectedHero={selectedHero} 
-                              loadGuide={this.loadGuide} />
+                              loadGuide={this.handleLoadGuide} />
                 </div>
                 <div style={style.rightPanel}>
                     <HeroGuide
@@ -124,7 +85,7 @@ class App extends Component {
             );
     };
 
-    loadGuide = (selectedHero) =>{
+    handleLoadGuide = (selectedHero) =>{
         this.setState({
             items: {
                 results: [],
