@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
 
 const getPage = async (page, hero) => {
 	
-	const pageStr = page > 1 ? `&page=${page}` : "";
+	const pageStr = page > 1 ? `?page=${page}` : "";
 	const response = await fetch(`https://www.dotabuff.com/heroes/${hero}/guides${pageStr}`);
 	const html = await response.text();
 	const $ = cheerio.load(html);
