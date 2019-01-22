@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryPie, VictoryChart, VictoryLabel, VictoryAxis } from 'victory';
-
 import { PulseLoader } from 'react-spinners';
 
 const api = {
@@ -15,18 +13,18 @@ const style = {
         display: "flex",
         flexDirection: "row",
         height:"100%",
-        background:"#EEE"
+        background:"#1C242D"
     },
     leftPanel: {
         flexBasis: "420px",
         overflowY: "scroll",
-        height:"100%",
-        background:"#333"
+        height:"100%"
     },
     rightPanel: {
         flexGrow:"2",
-        paddingLeft:"10px",
-        paddingBottom:"90px"
+        paddingLeft:"30px",
+        paddingBottom:"90px",
+        overflowY:"scroll"
     },
     rightList: {
       padding:"0"  
@@ -87,6 +85,8 @@ class App extends Component {
 
     render() {
         const { heroes, items, selectedHero } = this.state;
+        const guideCount = 20;
+        
         return (
             <div style={style.container}>
                 <div style={style.leftPanel}>
@@ -102,40 +102,30 @@ class App extends Component {
                     </ol>
                 </div>
                 <div style={style.rightPanel}>
-                    {items.isLoading 
-                        ? <h1 style={{paddingLeft:"20px"}}>{selectedHero} <PulseLoader/></h1>
-                        : <h1 style={{paddingLeft:"20px"}}>{selectedHero}</h1>
-                    }
+                    <h1 style={{color:"#F3F3F3"}}>{selectedHero} {items.isLoading && <PulseLoader color={"#F3F3F3"}/>}</h1>
                     {(!items.isLoading && selectedHero)  && (
-                        <VictoryChart height={300} width={700} labelComponent={<CustomLabel />}>
-                            <VictoryBar 
-                                        
-                                data={items.results.slice(0, 10).map(item  => ({
-                                    x: item.name, 
-                                    y: item.count
-                                }))}
-                                style={{
-                                    data: {
-                                        fill: (d) => d.x === 3 ? "#000000" : "#c43a31",
-                                        stroke: (d) => d.x === 3 ? "#000000" : "#c43a31",
-                                        fillOpacity: 0.7,
-                                        strokeWidth: 1,
-                                        marginBottom:3
-                                    },
-                                    labels: {
-                                        fontSize: 15,
-                                        fill: (d) => d.x === 3 ? "#000000" : "#c43a31"
-                                    }
-                                }}
-
-                                labels={(d) => Math.round((d.y/20)*100) + '%'}
-                            />
-                            <VictoryAxis tickLabelComponent={<CustomLabel data={items.results}/>}/>
+                        <article style={{background:"rgb(36, 47, 57)", maxWidth:"972px", padding:"6px 15px"}}>
                             
-                            <VictoryAxis 
-                                         
-                        />
-                        </VictoryChart>
+                            <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>ITEM PICKS BASED ON TOP {guideCount} GUIDES</h3>
+                            <table cellPadding="0" cellSpacing="0" style={{width:"auto"}}>
+                                <thead>
+                                    <tr>
+                                        <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Item</th>
+                                        <th/>
+                                        <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Pick Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {items.results.map(item => 
+                                        <tr>
+                                            <td style={{paddingRight:"20px"}}><img src={item.image} style={{width:"36px"}}/></td>
+                                            <td style={{paddingRight:"30px", color:"#333", fontWeight:"600", verticalAlign:"middle"}}><a style={{color:"#A9CF54", fontSize:"12px"}}>{item.name}</a></td>
+                                            <td style={{paddingBottom:"6px"}}><ProgressBar value={item.count} total={guideCount}/></td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </article>
                     )}
                 </div>
             </div>
@@ -179,13 +169,15 @@ class App extends Component {
             );
     };
 }
-class CustomLabel extends React.Component {
-    render() {
-        const { data, text, x, y } = this.props;
-        let find = data.find(x => x.name === text);
-        var img = find && find.image;
-        return <image x={x-25} y={y-8} href={img} height="50px" width="50px"/>;
-    }
+
+function ProgressBar({total, value}){
+    const percentage = Math.round((value/total)*100) + '%';
+    return (
+        <div style={{color:"#F3F3F3", width:"300px", fontSize:"12px"}}>
+            {percentage}
+            <div style={{width:percentage, background:"#A9CF54", height:"5px"}}></div>
+        </div>
+    );
 }
 
 export default App;
