@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { VictoryBar, VictoryPie, VictoryChart, VictoryLabel, VictoryAxis } from 'victory';
 
 const api = {
     getHeroes: () => fetch("/.netlify/functions/heroes")
@@ -20,7 +21,8 @@ const style = {
     },
     rightPanel: {
         flexGrow:"2",
-        paddingLeft:"30px"
+        paddingLeft:"30px",
+        paddingBottom:"90px"
     },
     rightList: {
       padding:"0"  
@@ -105,21 +107,50 @@ class App extends Component {
                         ? <h3>{this.state.hero} (LOADING...)</h3>
                         : <h3>{this.state.hero}</h3>
                     }
-                    <ol style={style.rightList}>
-                        {this.state.results.map(item => (
-                            <li key={item.name}
-                                style={style.item}>
-                                <img src={item.image}
-                                        style={style.item_image}/>
-                                {item.name} ({item.count})
-                            </li>
-                        ))}
-                    </ol>
+                    {(!this.state.isLoading && this.state.hero)  && (
+                        <VictoryChart height={300} width={700} labelComponent={<CustomLabel />}>
+                            <VictoryBar 
+                                        
+                                data={this.state.results.slice(0, 10).map(item  => ({
+                                    x: item.name, 
+                                    y: item.count
+                                }))}
+                                style={{
+                                    data: {
+                                        fill: (d) => d.x === 3 ? "#000000" : "#c43a31",
+                                        stroke: (d) => d.x === 3 ? "#000000" : "#c43a31",
+                                        fillOpacity: 0.7,
+                                        strokeWidth: 1,
+                                        marginBottom:3
+                                    },
+                                    labels: {
+                                        fontSize: 15,
+                                        fill: (d) => d.x === 3 ? "#000000" : "#c43a31"
+                                    }
+                                }}
+
+                                labels={(d) => d.y}
+                            />
+                            <VictoryAxis tickLabelComponent ={<CustomLabel data={this.state.results}/>}/>
+                            
+                            <VictoryAxis 
+                                         
+                        />
+                        </VictoryChart>
+                    )}
                 </div>
             </div>
         )
     }
 }
-
+class CustomLabel extends React.Component {
+    render() {
+        const { data, text, x, y } = this.props;
+            console.log(this.props)
+        let find = data.find(x => x.name === text);
+        var img = find && find.image;
+        return <image x={x-25} y={y-8} href={img} height="50px" width="50px"/>;
+    }
+}
 
 export default App;
