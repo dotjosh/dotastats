@@ -44,8 +44,8 @@ Section.Column = styled.td`
     color: #333;
     font-weight: 600;
     vertical-align: middle;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     border:0;
 `;
 
