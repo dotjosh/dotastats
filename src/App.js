@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { PulseLoader } from 'react-spinners';
+import React, {Component} from 'react';
+import {HeroList} from "./components/HeroList";
+import {HeroGuide} from "./components/HeroGuide";
 
 const api = {
     getHeroes: () => fetch("/.netlify/functions/heroes")
@@ -95,7 +96,7 @@ class App extends Component {
                               loadGuide={this.loadGuide} />
                 </div>
                 <div style={style.rightPanel}>
-                    <ItemList
+                    <HeroGuide
                         {...items}
                         selectedHero={selectedHero}
                         guideCount={GUIDE_COUNT}
@@ -104,25 +105,6 @@ class App extends Component {
             </div>
         )
     }
-    
-    loadGuide = (selectedHero) =>{
-        this.setState({
-            items: {
-                results: [],
-                isLoading: true,
-            },
-            selectedHero
-        });
-        api.getGuide(selectedHero)
-            .then(json =>
-                this.setState({
-                    items: {
-                        results: json.result,
-                        isLoading: false
-                    }
-                })
-            );
-    };
 
     loadHeroes = () => {
         this.setState({
@@ -141,65 +123,25 @@ class App extends Component {
                 })
             );
     };
-}
 
-function ProgressBar({total, value}){
-    const percentage = Math.round((value/total)*100) + '%';
-    return (
-        <div style={{color:"#F3F3F3", width:"300px", fontSize:"12px"}}>
-            {percentage}
-            <div style={{width:percentage, background:"#A9CF54", height:"5px"}}></div>
-        </div>
-    );
-}
-
-function HeroList({isLoading, results, loadGuide, selectedHero}){
-    return (
-        <React.Fragment>
-            {isLoading && <h1 style={{textAlign:"center"}}><PulseLoader color="#FFF"/></h1>}
-            <ol style={{padding:"0", margin:"0"}}>
-                {results.map(hero => (
-                    <li key={hero.name}
-                        style={{...style.card, background: hero.image, borderColor: hero.name === selectedHero ? "blue" : "#333"}}
-                        onClick={() => loadGuide(hero.name)}>
-                        <span style={style.card_text}>{hero.name}</span>
-                    </li>
-                ))}
-            </ol>
-        </React.Fragment>
-    );
-}
-
-function ItemList({selectedHero, isLoading, guideCount, results}){
-    return ( 
-        <React.Fragment>
-            <h1 style={{color:"#F3F3F3"}}>{selectedHero} {isLoading && <PulseLoader color={"#F3F3F3"}/>}</h1>
-            {(!isLoading && selectedHero)  && (
-                <article style={{background:"rgb(36, 47, 57)", maxWidth:"972px", padding:"6px 15px"}}>
-
-                    <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>FINAL ITEMS BASED ON TOP {guideCount} GUIDES</h3>
-                    <table cellPadding="0" cellSpacing="0" style={{width:"auto"}}>
-                        <thead>
-                        <tr>
-                            <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Item</th>
-                            <th/>
-                            <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Pick Rate</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {results.map(item =>
-                            <tr>
-                                <td style={{paddingRight:"20px"}}><img src={item.image} style={{width:"36px"}}/></td>
-                                <td style={{paddingRight:"30px", color:"#333", fontWeight:"600", verticalAlign:"middle"}}><a style={{color:"#A9CF54", fontSize:"12px"}}>{item.name}</a></td>
-                                <td style={{paddingBottom:"6px"}}><ProgressBar value={item.count} total={guideCount}/></td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </article>
-            )}
-        </React.Fragment>
-    );
+    loadGuide = (selectedHero) =>{
+        this.setState({
+            items: {
+                results: [],
+                isLoading: true,
+            },
+            selectedHero
+        });
+        api.getGuide(selectedHero)
+            .then(json =>
+                this.setState({
+                    items: {
+                        results: json.result,
+                        isLoading: false
+                    }
+                })
+            );
+    };
 }
 
 export default App;
