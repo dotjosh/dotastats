@@ -18,7 +18,7 @@ CardList.Item = styled.div`
     border: solid 7px white;
     list-style-type: none;
     padding: 0;
-    color: ${props => props.isSelected ? "blue" : "#333"};
+    border-color: ${props => props.isSelected ? "blue" : "#333"};
     background: ${props => props.imageBackground};
 `;
 
