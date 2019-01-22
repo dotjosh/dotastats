@@ -45,8 +45,6 @@ exports.handler = async (event, context) => {
 										image: aggregated[key].image
 									}));
 	
-	console.log(aggregatedArray)
-	
 	const sortedArray = orderBy(aggregatedArray, ['count'], ['desc']);
 	
 	return {
