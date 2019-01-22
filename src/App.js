@@ -85,48 +85,21 @@ class App extends Component {
 
     render() {
         const { heroes, items, selectedHero } = this.state;
-        const guideCount = 20;
+        const GUIDE_COUNT = 20;
         
         return (
             <div style={style.container}>
                 <div style={style.leftPanel}>
-                    {heroes.isLoading && <h1 style={{textAlign:"center"}}><PulseLoader color="#FFF"/></h1>}
-                    <ol style={{padding:"0", margin:"0"}}>
-                        {heroes.results.map(hero => (
-                            <li key={hero.name} 
-                                style={{...style.card, background: hero.image, borderColor: hero.name === selectedHero ? "blue" : "#333"}}
-                                onClick={() => this.loadGuide(hero.name)}>
-                                <span style={style.card_text}>{hero.name}</span>
-                            </li>
-                        ))}
-                    </ol>
+                    <HeroList {...heroes} 
+                              selectedHero={selectedHero} 
+                              loadGuide={this.loadGuide} />
                 </div>
                 <div style={style.rightPanel}>
-                    <h1 style={{color:"#F3F3F3"}}>{selectedHero} {items.isLoading && <PulseLoader color={"#F3F3F3"}/>}</h1>
-                    {(!items.isLoading && selectedHero)  && (
-                        <article style={{background:"rgb(36, 47, 57)", maxWidth:"972px", padding:"6px 15px"}}>
-                            
-                            <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>FINAL ITEMS BASED ON TOP {guideCount} GUIDES</h3>
-                            <table cellPadding="0" cellSpacing="0" style={{width:"auto"}}>
-                                <thead>
-                                    <tr>
-                                        <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Item</th>
-                                        <th/>
-                                        <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Pick Rate</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {items.results.map(item => 
-                                        <tr>
-                                            <td style={{paddingRight:"20px"}}><img src={item.image} style={{width:"36px"}}/></td>
-                                            <td style={{paddingRight:"30px", color:"#333", fontWeight:"600", verticalAlign:"middle"}}><a style={{color:"#A9CF54", fontSize:"12px"}}>{item.name}</a></td>
-                                            <td style={{paddingBottom:"6px"}}><ProgressBar value={item.count} total={guideCount}/></td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </article>
-                    )}
+                    <ItemList
+                        {...items}
+                        selectedHero={selectedHero}
+                        guideCount={GUIDE_COUNT}
+                    />
                 </div>
             </div>
         )
@@ -177,6 +150,55 @@ function ProgressBar({total, value}){
             {percentage}
             <div style={{width:percentage, background:"#A9CF54", height:"5px"}}></div>
         </div>
+    );
+}
+
+function HeroList({isLoading, results, loadGuide, selectedHero}){
+    return (
+        <React.Fragment>
+            {isLoading && <h1 style={{textAlign:"center"}}><PulseLoader color="#FFF"/></h1>}
+            <ol style={{padding:"0", margin:"0"}}>
+                {results.map(hero => (
+                    <li key={hero.name}
+                        style={{...style.card, background: hero.image, borderColor: hero.name === selectedHero ? "blue" : "#333"}}
+                        onClick={() => loadGuide(hero.name)}>
+                        <span style={style.card_text}>{hero.name}</span>
+                    </li>
+                ))}
+            </ol>
+        </React.Fragment>
+    );
+}
+
+function ItemList({selectedHero, isLoading, guideCount, results}){
+    return ( 
+        <React.Fragment>
+            <h1 style={{color:"#F3F3F3"}}>{selectedHero} {isLoading && <PulseLoader color={"#F3F3F3"}/>}</h1>
+            {(!isLoading && selectedHero)  && (
+                <article style={{background:"rgb(36, 47, 57)", maxWidth:"972px", padding:"6px 15px"}}>
+
+                    <h3 style={{letterSpacing:".3px", color:"#F3F3F3", fontWeight:"normal", fontSize:"15px"}}>FINAL ITEMS BASED ON TOP {guideCount} GUIDES</h3>
+                    <table cellPadding="0" cellSpacing="0" style={{width:"auto"}}>
+                        <thead>
+                        <tr>
+                            <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Item</th>
+                            <th/>
+                            <th style={{color:"#FFF", textAlign:"left", fontSize:"13px", fontWeight:"bold", paddingBottom:"8px"}}>Pick Rate</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {results.map(item =>
+                            <tr>
+                                <td style={{paddingRight:"20px"}}><img src={item.image} style={{width:"36px"}}/></td>
+                                <td style={{paddingRight:"30px", color:"#333", fontWeight:"600", verticalAlign:"middle"}}><a style={{color:"#A9CF54", fontSize:"12px"}}>{item.name}</a></td>
+                                <td style={{paddingBottom:"6px"}}><ProgressBar value={item.count} total={guideCount}/></td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </article>
+            )}
+        </React.Fragment>
     );
 }
 
