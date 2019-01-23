@@ -75,15 +75,15 @@ class App extends Component {
                 isLoading: true
             }
         });
+        const onComplete = json =>
+            this.setState({
+                heroes: {
+                    results: json.result,
+                    isLoading: false
+                }
+            });
         api.getHeroes()
-            .then(json =>
-                this.setState({
-                    heroes: {
-                        results: json.result,
-                        isLoading: false
-                    }
-                })
-            );
+            .then(onComplete);
     };
 
     handleLoadGuide = (selectedHero) =>{
@@ -94,15 +94,15 @@ class App extends Component {
             },
             selectedHero
         });
+        const onComplete = json =>
+            this.setState({
+                items: {
+                    results: json.result,
+                    isLoading: false
+                }
+            });
         api.getGuide(selectedHero)
-            .then(json =>
-                this.setState({
-                    items: {
-                        results: json.result,
-                        isLoading: false
-                    }
-                })
-            );
+            .then(onComplete);
     };
 }
 
