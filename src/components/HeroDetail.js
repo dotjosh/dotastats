@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { PulseLoader } from "react-spinners";
 import { ProgressBar } from "./ProgressBar";
+import { Tabs } from "./Tabs";
 import * as selectors from "../selectors";
 
 const Header = styled.h1`
@@ -58,42 +59,6 @@ Section.Link = styled.a`
 	color: ${x => x.theme.text.link};
 	font-size: 12px;
 `;
-const Select = styled.select`
-	font-size: 12px;
-	padding: 8px 4px;
-	background: ${x => x.theme.color.primary};
-	color: ${x => x.theme.text.primary};
-	margin: 0 0 15px 0;
-	width: 168px;
-	border: 0;
-`;
-
-const TabContainer = styled.div`
-	background:${x => x.theme.color.primary};
-`;
-
-const TabItem = styled.div`
-	background:${x => x.isSelected ? x.theme.color.secondary : x.theme.color.secondary_darker};
-	color:${x => x.isSelected ? x.theme.text.primary : x.theme.text.primary_darker};
-	display: inline-block;
-	margin-right:10px;
-	padding:10px;
-	font-size:14px;
-	cursor:pointer;
-`;
-
-function Tabs({ items, onClick, textFn, isSelectedFn }) {
-	return (
-		<TabContainer>
-			{items.map(item => (
-				<TabItem onClick={() => onClick(item)}
-					isSelected={isSelectedFn(item)}>
-					{textFn(item)}
-				</TabItem>
-			))}
-		</TabContainer>
-	);
-}
 
 export class HeroDetail extends React.Component {
 	state = {
