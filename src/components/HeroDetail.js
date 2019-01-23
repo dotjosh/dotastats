@@ -68,9 +68,36 @@ const Select = styled.select`
 	border: 0;
 `;
 
+const TabContainer = styled.div`
+	background:${x => x.theme.color.primary};
+`;
+
+const TabItem = styled.div`
+	background:${x => x.isSelected ? x.theme.color.secondary : x.theme.color.secondary_darker};
+	color:${x => x.isSelected ? x.theme.text.primary : x.theme.text.primary_darker};
+	display: inline-block;
+	margin-right:10px;
+	padding:10px;
+	font-size:14px;
+	cursor:pointer;
+`;
+
+function Tabs({ items, onClick, textFn, isSelectedFn }) {
+	return (
+		<TabContainer>
+			{items.map(item => (
+				<TabItem onClick={() => onClick(item)}
+					isSelected={isSelectedFn(item)}>
+					{textFn(item)}
+				</TabItem>
+			))}
+		</TabContainer>
+	);
+}
+
 export class HeroDetail extends React.Component {
 	state = {
-		selectedLane: "Any Lane"
+		selectedLane: null
 	};
 
 	render() {
@@ -84,48 +111,47 @@ export class HeroDetail extends React.Component {
 					{selectedHero} {isLoading && <Header.LoadingAnimation />}
 				</Header>
 				{!isLoading && selectedHero && (
-					<Section>
+					<React.Fragment>
+
 						<Section.Header>
 							FINAL ITEMS BASED ON TOP {results.length} GUIDES
 						</Section.Header>
-						<Select
-							value={selectedLane}
-							onChange={e => this.setState({ selectedLane: e.target.value })}
-						>
-							{selectors.distinctLanes(results).map(lane => (
-								<option value={lane} key={lane}>
-									{lane}
-								</option>
-							))}
-						</Select>
-						<Section.Table>
-							<thead>
-								<tr>
-									<th>Item</th>
-									<th />
-									<th>Pick Rate</th>
-								</tr>
-							</thead>
-							<tbody>
-								{aggregated.map(item => (
-									<tr key={item.name}>
-										<Section.Column isItem>
-											<ItemImage src={item.image} />
-										</Section.Column>
-										<Section.Column>
-											<Section.Link>{item.name}</Section.Link>
-										</Section.Column>
-										<Section.Column>
-											<ProgressBar
-												value={item.count}
-												total={filteredByLane.length}
-											/>
-										</Section.Column>
+						<Tabs
+							items={selectors.distinctLanes(results)}
+							textFn={x => x.text}
+							onClick={x => this.setState({ selectedLane: x.value })}
+							isSelectedFn={x => x.value === selectedLane}
+						/>
+						<Section>
+							<Section.Table>
+								<thead>
+									<tr>
+										<th>Item</th>
+										<th />
+										<th>Pick Rate</th>
 									</tr>
-								))}
-							</tbody>
-						</Section.Table>
-					</Section>
+								</thead>
+								<tbody>
+									{aggregated.map(item => (
+										<tr key={item.name}>
+											<Section.Column isItem>
+												<ItemImage src={item.image} />
+											</Section.Column>
+											<Section.Column>
+												<Section.Link>{item.name}</Section.Link>
+											</Section.Column>
+											<Section.Column>
+												<ProgressBar
+													value={item.count}
+													total={filteredByLane.length}
+												/>
+											</Section.Column>
+										</tr>
+									))}
+								</tbody>
+							</Section.Table>
+						</Section>
+					</React.Fragment>
 				)}
 			</React.Fragment>
 		);

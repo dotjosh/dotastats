@@ -10,10 +10,12 @@ const theme = {
 		primary: "#1C242D",
 		secondary: "#242F39",
 		alternate: "rgba(255, 255, 255, 0.04)",
+		secondary_darker: "rgb(32, 42, 51)",
 		highlight: "blue"
 	},
 	text:{
 		primary: "#EEE",
+		primary_darker: "#AAA",
 		link: "#A9CF54"
 	}
 };

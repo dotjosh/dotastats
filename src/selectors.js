@@ -1,16 +1,18 @@
 import { orderBy } from "lodash";
 
 export function distinctLanes(results) {
-	const result = results.map(x => x.lane).filter(onlyDistinct);
-	result.push("Any Lane");
-	result.sort();
-	return result;
+	const result = results
+		.map(x => x.lane)
+		.filter(onlyDistinct)
+		.map(lane => ({ text: `${lane} (${results.filter(y => y.lane === lane).length})`, value: lane }));
+	result.push({ text: "Any Lane", value: null });
+	return orderBy(result, "text")
 }
 
 const onlyDistinct = (value, index, self) => self.indexOf(value) === index;
 
 export function filteredByLane(results, lane) {
-	return results.filter(x => lane === "Any Lane" || x.lane === lane);
+	return results.filter(x => !!!lane || x.lane === lane);
 }
 
 export function aggregated(results) {
