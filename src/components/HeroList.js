@@ -12,14 +12,16 @@ CardList.Item = styled.div`
 	cursor: pointer;
 	float: left;
 	height: 65px;
-	color: #fff;
 	vertical-align: bottom;
 	position: relative;
-	border: solid 7px white;
+	border: solid 7px ${x => x.theme.text.primary};
 	list-style-type: none;
 	padding: 0;
-	border-color: ${props => (props.isSelected ? "blue" : "#333")};
-	background: ${props => props.imageBackground};
+	border-color: ${x => (x.isSelected ? x.theme.color.highlight : x.theme.color.primary)};
+	background: ${x => x.imageBackground};
+	&:hover {
+		border-color: ${x => x.theme.color.highlight};
+	}
 `;
 
 CardList.ItemText = styled.div`
@@ -29,7 +31,7 @@ CardList.ItemText = styled.div`
 	left: 3px;
 	text-shadow: 0px 0px 2px #0a0a0a;
 	font-size: 13px;
-	color: #f3f3f3;
+	color: ${x => x.theme.text.primary};
 `;
 
 export function HeroList({

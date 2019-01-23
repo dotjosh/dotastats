@@ -2,14 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 
 const OuterBar = styled.div`
-	color: #f3f3f3;
+	color: ${x => x.theme.text.primary};
 	width: 300px;
 	font-size: 12px;
 `;
 
 const InnerBar = styled.div`
-	width: ${props => props.width};
-	background: #a9cf54;
+	width: ${x => x.width};
+	background: ${x => x.theme.text.link};;
 	height: 5px;
 `;
 

@@ -5,21 +5,21 @@ import { ProgressBar } from "./ProgressBar";
 import * as selectors from "../selectors";
 
 const Header = styled.h1`
-	color: #f3f3f3;
+	color: ${x => x.theme.text.primary};
 `;
 
 Header.LoadingAnimation = styled(PulseLoader)``;
 Header.LoadingAnimation.defaultProps = { color: "#F3F3F3" };
 
 const Section = styled.article`
-	background: rgb(36, 47, 57);
+	background: ${x => x.theme.text.secondary};
 	max-width: 972px;
 	padding: 6px 15px;
 `;
 
 Section.Header = styled.h3`
 	letter-spacing: 0.3px;
-	color: #f3f3f3;
+	color: ${x => x.theme.text.primary};
 	font-weight: normal;
 	font-size: 15px;
 	margin: 4px 0 18px 0;
@@ -27,7 +27,7 @@ Section.Header = styled.h3`
 
 Section.Table = styled.table`
 	th {
-		color: #fff;
+		color: ${x => x.theme.text.primary};
 		text-align: left;
 		font-size: 13px;
 		font-weight: bold;
@@ -35,14 +35,13 @@ Section.Table = styled.table`
 	}
 
 	tbody tr:nth-child(odd) {
-		background: rgba(255, 255, 255, 0.04);
+		background: ${x => x.theme.color.alternate};
 	}
 `;
 Section.Table.defaultProps = { cellPadding: "0", cellSpacing: "0" };
 
 Section.Column = styled.td`
-	padding-right: ${props => (props.isItem ? "10px" : "30px")};
-	color: #333;
+	padding-right: ${x => (x.isItem ? "10px" : "30px")};
 	font-weight: 600;
 	vertical-align: middle;
 	padding-top: 3px;
@@ -56,14 +55,14 @@ const ItemImage = styled.img`
 `;
 
 Section.Link = styled.a`
-	color: #a9cf54;
+	color: ${x => x.theme.text.link};
 	font-size: 12px;
 `;
 const Select = styled.select`
 	font-size: 12px;
 	padding: 8px 4px;
-	background: #1c242d;
-	color: #fff;
+	background: ${x => x.theme.color.primary};
+	color: ${x => x.theme.text.primary};
 	margin: 0 0 15px 0;
 	width: 168px;
 	border: 0;

@@ -3,12 +3,26 @@ import { HeroList } from "./components/HeroList";
 import { HeroGuide } from "./components/HeroGuide";
 import api from "./api";
 import styled from "@emotion/styled";
+import { ThemeProvider } from 'emotion-theming'
+
+const theme = {
+	color: {
+		primary: "#1C242D",
+		secondary: "rgb(36,47,57)",
+		alternate: "rgba(255, 255, 255, 0.04)",
+		highlight: "blue"
+	},
+	text:{
+		primary: "#EEE",
+		link: "#A9CF54"
+	}
+};
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: row;
 	height: 100%;
-	background: #1c242d;
+	background: ${x => x.theme.color.primary};
 `;
 
 const LeftPanel = styled.div`
@@ -50,18 +64,20 @@ class App extends Component {
 		const { heroes, items, selectedHero } = this.state;
 
 		return (
-			<Container>
-				<LeftPanel>
-					<HeroList
-						{...heroes}
-						selectedHero={selectedHero}
-						loadGuide={this.handleLoadGuide}
-					/>
-				</LeftPanel>
-				<RightPanel>
-					<HeroGuide {...items} selectedHero={selectedHero} />
-				</RightPanel>
-			</Container>
+			<ThemeProvider theme={theme}>			
+				<Container>
+					<LeftPanel>
+						<HeroList
+							{...heroes}
+							selectedHero={selectedHero}
+							loadGuide={this.handleLoadGuide}
+						/>
+					</LeftPanel>
+					<RightPanel>
+						<HeroGuide {...items} selectedHero={selectedHero} />
+					</RightPanel>
+				</Container>
+			</ThemeProvider>
 		);
 	}
 

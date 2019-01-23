@@ -19,7 +19,6 @@ exports.handler = async (event, context) => {
 	const finalResult = [];
 	await Promise.all(promises).then(results => {
 		results.forEach(result => {
-			console.log(result);
 			finalResult.push(...result);
 		});
 	});
