@@ -34,7 +34,7 @@ CardList.ItemText = styled.div`
 	color: ${x => x.theme.text.primary};
 `;
 
-export function HeroList({
+export function Heroes({
 	isLoading,
 	results,
 	loadGuide: onLoadGuide,

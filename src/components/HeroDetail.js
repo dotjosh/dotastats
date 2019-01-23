@@ -68,7 +68,7 @@ const Select = styled.select`
 	border: 0;
 `;
 
-export class HeroGuide extends React.Component {
+export class HeroDetail extends React.Component {
 	state = {
 		selectedLane: "Any Lane"
 	};

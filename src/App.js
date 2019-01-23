@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { HeroList } from "./components/HeroList";
-import { HeroGuide } from "./components/HeroGuide";
+import { HeroDetail } from "./components/HeroDetail";
+import { Heroes } from "./components/Heroes";
 import api from "./api";
 import styled from "@emotion/styled";
 import { ThemeProvider } from 'emotion-theming'
@@ -67,14 +67,14 @@ class App extends Component {
 			<ThemeProvider theme={theme}>			
 				<Container>
 					<LeftPanel>
-						<HeroList
+						<Heroes
 							{...heroes}
 							selectedHero={selectedHero}
 							loadGuide={this.handleLoadGuide}
 						/>
 					</LeftPanel>
 					<RightPanel>
-						<HeroGuide {...items} selectedHero={selectedHero} />
+						<HeroDetail {...items} selectedHero={selectedHero} />
 					</RightPanel>
 				</Container>
 			</ThemeProvider>
