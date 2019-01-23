@@ -48,7 +48,6 @@ class App extends Component {
 
 	render() {
 		const { heroes, items, selectedHero } = this.state;
-		const GUIDE_COUNT = 20;
 
 		return (
 			<Container>
@@ -60,11 +59,7 @@ class App extends Component {
 					/>
 				</LeftPanel>
 				<RightPanel>
-					<HeroGuide
-						{...items}
-						selectedHero={selectedHero}
-						guideCount={GUIDE_COUNT}
-					/>
+					<HeroGuide {...items} selectedHero={selectedHero} />
 				</RightPanel>
 			</Container>
 		);

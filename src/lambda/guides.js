@@ -19,37 +19,15 @@ exports.handler = async (event, context) => {
 	const finalResult = [];
 	await Promise.all(promises).then(results => {
 		results.forEach(result => {
+			console.log(result);
 			finalResult.push(...result);
 		});
 	});
 
-	const aggregated = finalResult.reduce((agg, val) => {
-		let existing = agg[val.name];
-		if (existing) {
-			existing.count++;
-		} else {
-			agg[val.name] = {
-				name: val.name,
-				count: 1,
-				image: val.image
-			};
-		}
-
-		return agg;
-	}, {});
-
-	const aggregatedArray = Object.keys(aggregated).map(key => ({
-		name: key,
-		count: aggregated[key].count,
-		image: aggregated[key].image
-	}));
-
-	const sortedArray = orderBy(aggregatedArray, ["count"], ["desc"]);
-
 	return {
 		statusCode: 200,
 		body: JSON.stringify({
-			result: sortedArray
+			result: finalResult
 		}),
 		headers: {
 			"Access-Control-Allow-Origin": "*", // Required for CORS support to work
@@ -65,19 +43,29 @@ const getPage = async (page, hero) => {
 	);
 	const html = await response.text();
 	const $ = cheerio.load(html);
-	return $(
-		"div.top-right div.image-container.image-container-item.image-container-medicon"
-	)
+	return $(".r-stats-grid")
 		.get()
-		.map(el => ({
-			name: $(el)
-				.find("a")
-				.attr("href")
-				.substring(7)
-				.replace("-", " "),
-			image: $(el)
-				.find("img")
-				.attr("src")
-				.replace("/assets", "https://www.dotabuff.com/assets")
+		.map(x => ({
+			lane: $(x)
+				.find(".lane-icon")
+				.parent()
+				.contents()
+				.eq(1)
+				.text()
+				.trim(),
+			items: $(x)
+				.find(".top-right .image-container-medicon")
+				.get()
+				.map(el => ({
+					name: $(el)
+						.find("a")
+						.attr("href")
+						.substring(7)
+						.replace("-", " "),
+					image: $(el)
+						.find("img")
+						.attr("src")
+						.replace("/assets", "https://www.dotabuff.com/assets")
+				}))
 		}));
 };

@@ -6,6 +6,7 @@
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
     "cheerio": "^1.0.0-rc.2",
+    "lodash": "^4.17.11",
     "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
     "node-fetch": "^2.3.0",

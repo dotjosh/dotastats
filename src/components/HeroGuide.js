@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { PulseLoader } from "react-spinners";
 import { ProgressBar } from "./ProgressBar";
+import * as selectors from "../selectors";
 
 const Header = styled.h1`
 	color: #f3f3f3;
@@ -58,44 +59,76 @@ Section.Link = styled.a`
 	color: #a9cf54;
 	font-size: 12px;
 `;
+const Select = styled.select`
+	font-size: 12px;
+	padding: 8px 4px;
+	background: #1c242d;
+	color: #fff;
+	margin: 0 0 15px 0;
+	width: 168px;
+	border: 0;
+`;
 
-export function HeroGuide({ selectedHero, isLoading, guideCount, results }) {
-	return (
-		<React.Fragment>
-			<Header>
-				{selectedHero} {isLoading && <Header.LoadingAnimation />}
-			</Header>
-			{!isLoading && selectedHero && (
-				<Section>
-					<Section.Header>
-						FINAL ITEMS BASED ON TOP {guideCount} GUIDES
-					</Section.Header>
-					<Section.Table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th />
-								<th>Pick Rate</th>
-							</tr>
-						</thead>
-						<tbody>
-							{results.map(item => (
-								<tr key={item.name}>
-									<Section.Column isItem>
-										<ItemImage src={item.image} />
-									</Section.Column>
-									<Section.Column>
-										<Section.Link>{item.name}</Section.Link>
-									</Section.Column>
-									<Section.Column>
-										<ProgressBar value={item.count} total={guideCount} />
-									</Section.Column>
-								</tr>
+export class HeroGuide extends React.Component {
+	state = {
+		selectedLane: "Any Lane"
+	};
+
+	render() {
+		const { selectedHero, isLoading, results } = this.props;
+		const { selectedLane } = this.state;
+		const filteredByLane = selectors.filteredByLane(results, selectedLane);
+		const aggregated = selectors.aggregated(filteredByLane);
+		return (
+			<React.Fragment>
+				<Header>
+					{selectedHero} {isLoading && <Header.LoadingAnimation />}
+				</Header>
+				{!isLoading && selectedHero && (
+					<Section>
+						<Section.Header>
+							FINAL ITEMS BASED ON TOP {results.length} GUIDES
+						</Section.Header>
+						<Select
+							value={selectedLane}
+							onChange={e => this.setState({ selectedLane: e.target.value })}
+						>
+							{selectors.distinctLanes(results).map(lane => (
+								<option value={lane} key={lane}>
+									{lane}
+								</option>
 							))}
-						</tbody>
-					</Section.Table>
-				</Section>
-			)}
-		</React.Fragment>
-	);
+						</Select>
+						<Section.Table>
+							<thead>
+								<tr>
+									<th>Item</th>
+									<th />
+									<th>Pick Rate</th>
+								</tr>
+							</thead>
+							<tbody>
+								{aggregated.map(item => (
+									<tr key={item.name}>
+										<Section.Column isItem>
+											<ItemImage src={item.image} />
+										</Section.Column>
+										<Section.Column>
+											<Section.Link>{item.name}</Section.Link>
+										</Section.Column>
+										<Section.Column>
+											<ProgressBar
+												value={item.count}
+												total={filteredByLane.length}
+											/>
+										</Section.Column>
+									</tr>
+								))}
+							</tbody>
+						</Section.Table>
+					</Section>
+				)}
+			</React.Fragment>
+		);
+	}
 }
