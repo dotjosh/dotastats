@@ -8,7 +8,7 @@ import { ThemeProvider } from 'emotion-theming'
 const theme = {
 	color: {
 		primary: "#1C242D",
-		secondary: "rgb(36,47,57)",
+		secondary: "#242F39",
 		alternate: "rgba(255, 255, 255, 0.04)",
 		highlight: "blue"
 	},

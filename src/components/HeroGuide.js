@@ -12,7 +12,7 @@ Header.LoadingAnimation = styled(PulseLoader)``;
 Header.LoadingAnimation.defaultProps = { color: "#F3F3F3" };
 
 const Section = styled.article`
-	background: ${x => x.theme.text.secondary};
+	background: ${x => x.theme.color.secondary};
 	max-width: 972px;
 	padding: 6px 15px;
 `;
