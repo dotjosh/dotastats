@@ -2,23 +2,9 @@ import React, { Component } from "react";
 import { HeroDetail } from "./components/HeroDetail";
 import { Heroes } from "./components/Heroes";
 import api from "./api";
-import styled from "@emotion/styled";
-import { ThemeProvider } from 'emotion-theming'
-
-const theme = {
-	color: {
-		primary: "#1C242D",
-		secondary: "#242F39",
-		alternate: "rgba(255, 255, 255, 0.04)",
-		secondary_darker: "rgb(32, 42, 51)",
-		highlight: "blue"
-	},
-	text:{
-		primary: "#EEE",
-		primary_darker: "#AAA",
-		link: "#A9CF54"
-	}
-};
+import { ThemeProvider } from "emotion-theming";
+import { GuideResponse, HeroResponse, Guide, Hero } from "./types";
+import styled, { dotaBuff } from "./theme";
 
 const Container = styled.div`
 	display: flex;
@@ -40,8 +26,20 @@ const RightPanel = styled.div`
 	overflow-y: scroll;
 `;
 
-const defaultState = {
-	items: {
+interface State {
+	guides: {
+		results: Guide[];
+		isLoading: boolean;
+	};
+	heroes: {
+		results: Hero[];
+		isLoading: boolean;
+	};
+	selectedHero: null | Hero;
+}
+
+const defaultState: State = {
+	guides: {
 		results: [],
 		isLoading: false
 	},
@@ -52,21 +50,18 @@ const defaultState = {
 	selectedHero: null
 };
 
-class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = defaultState;
-	}
+class App extends Component<{}, typeof defaultState> {
+	state = defaultState;
 
 	componentDidMount() {
 		this.loadHeroes();
 	}
 
 	render() {
-		const { heroes, items, selectedHero } = this.state;
+		const { heroes, guides, selectedHero } = this.state;
 
 		return (
-			<ThemeProvider theme={theme}>			
+			<ThemeProvider theme={dotaBuff}>
 				<Container>
 					<LeftPanel>
 						<Heroes
@@ -76,7 +71,7 @@ class App extends Component {
 						/>
 					</LeftPanel>
 					<RightPanel>
-						<HeroDetail {...items} selectedHero={selectedHero} />
+						<HeroDetail {...guides} selectedHero={selectedHero} />
 					</RightPanel>
 				</Container>
 			</ThemeProvider>
@@ -90,28 +85,28 @@ class App extends Component {
 				isLoading: true
 			}
 		});
-		const onComplete = json =>
+		const onComplete = (response: HeroResponse) =>
 			this.setState({
 				heroes: {
-					results: json.result,
+					results: response.result,
 					isLoading: false
 				}
 			});
 		api.getHeroes().then(onComplete);
 	};
 
-	handleLoadGuide = selectedHero => {
+	handleLoadGuide = (selectedHero: Hero): void => {
 		this.setState({
-			items: {
+			guides: {
 				results: [],
 				isLoading: true
 			},
 			selectedHero
 		});
-		const onComplete = json =>
+		const onComplete = (response: GuideResponse) =>
 			this.setState({
-				items: {
-					results: json.result,
+				guides: {
+					results: response.result,
 					isLoading: false
 				}
 			});

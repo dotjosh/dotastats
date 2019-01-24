@@ -2,7 +2,6 @@
 
 import fetch from "node-fetch";
 import cheerio from "cheerio";
-import orderBy from "lodash.orderby";
 
 exports.handler = async (event, context) => {
 	const response = await fetch("https://www.dotabuff.com/heroes");

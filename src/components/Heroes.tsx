@@ -1,13 +1,17 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "../theme";
 import { PulseLoader } from "react-spinners";
+import { Hero, Guide } from "../types";
 
 const CardList = styled.ol`
 	padding: 0;
 	margin: 0;
 `;
 
-CardList.Item = styled.div`
+const CardListItem = styled.div<{
+	isSelected?: boolean;
+	imageBackground: string;
+}>`
 	width: 120px;
 	cursor: pointer;
 	float: left;
@@ -17,14 +21,15 @@ CardList.Item = styled.div`
 	border: solid 7px ${x => x.theme.text.primary};
 	list-style-type: none;
 	padding: 0;
-	border-color: ${x => (x.isSelected ? x.theme.color.highlight : x.theme.color.primary)};
+	border-color: ${x =>
+		x.isSelected ? x.theme.color.highlight : x.theme.color.primary};
 	background: ${x => x.imageBackground};
 	&:hover {
 		border-color: ${x => x.theme.color.highlight};
 	}
 `;
 
-CardList.ItemText = styled.div`
+const CardListItemText = styled.div`
 	position: absolute;
 	bottom: 0;
 	font-weight: bold;
@@ -34,12 +39,19 @@ CardList.ItemText = styled.div`
 	color: ${x => x.theme.text.primary};
 `;
 
-export function Heroes({
+interface Props<T> {
+	isLoading: boolean;
+	results: Hero[];
+	loadGuide(hero: Hero): void;
+	selectedHero: Hero | null;
+}
+
+export function Heroes<T>({
 	isLoading,
 	results,
 	loadGuide: onLoadGuide,
 	selectedHero
-}) {
+}: Props<T>): JSX.Element {
 	return (
 		<React.Fragment>
 			{isLoading && (
@@ -49,14 +61,16 @@ export function Heroes({
 			)}
 			<CardList>
 				{results.map(hero => (
-					<CardList.Item
+					<CardListItem
 						key={hero.name}
 						imageBackground={hero.image}
-						isSelected={hero.name === selectedHero}
-						onClick={() => onLoadGuide(hero.name)}
+						isSelected={
+							selectedHero !== null && hero.name === selectedHero.name
+						}
+						onClick={() => onLoadGuide(hero)}
 					>
-						<CardList.ItemText>{hero.name}</CardList.ItemText>
-					</CardList.Item>
+						<CardListItemText>{hero.name}</CardListItemText>
+					</CardListItem>
 				))}
 			</CardList>
 		</React.Fragment>

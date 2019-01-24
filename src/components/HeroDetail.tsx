@@ -1,16 +1,17 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "../theme";
 import { PulseLoader } from "react-spinners";
 import { ProgressBar } from "./ProgressBar";
 import { Tabs } from "./Tabs";
 import * as selectors from "../selectors";
+import { Hero, Lane } from "../types";
 
 const Header = styled.h1`
 	color: ${x => x.theme.text.primary};
 `;
 
-Header.LoadingAnimation = styled(PulseLoader)``;
-Header.LoadingAnimation.defaultProps = { color: "#F3F3F3" };
+const LoadingAnimation = styled(PulseLoader)``;
+LoadingAnimation.defaultProps = { color: "#F3F3F3" };
 
 const Section = styled.article`
 	background: ${x => x.theme.color.secondary};
@@ -18,7 +19,7 @@ const Section = styled.article`
 	padding: 6px 15px;
 `;
 
-Section.Header = styled.h3`
+const SectionHeader = styled.h3`
 	letter-spacing: 0.3px;
 	color: ${x => x.theme.text.primary};
 	font-weight: normal;
@@ -26,7 +27,7 @@ Section.Header = styled.h3`
 	margin: 4px 0 18px 0;
 `;
 
-Section.Table = styled.table`
+const SectionTable = styled.table`
 	th {
 		color: ${x => x.theme.text.primary};
 		text-align: left;
@@ -35,13 +36,13 @@ Section.Table = styled.table`
 		padding-bottom: 8px;
 	}
 
-	tbody tr:nth-child(odd) {
+	tbody tr:nth-of-type(odd) {
 		background: ${x => x.theme.color.alternate};
 	}
 `;
-Section.Table.defaultProps = { cellPadding: "0", cellSpacing: "0" };
+SectionTable.defaultProps = { cellPadding: "0", cellSpacing: "0" };
 
-Section.Column = styled.td`
+const SectionColumn = styled.td<{ isItem?: boolean }>`
 	padding-right: ${x => (x.isItem ? "10px" : "30px")};
 	font-weight: 600;
 	vertical-align: middle;
@@ -55,14 +56,24 @@ const ItemImage = styled.img`
 	height: 26px;
 `;
 
-Section.Link = styled.a`
+const SectionLink = styled.a`
 	color: ${x => x.theme.text.link};
 	font-size: 12px;
 `;
 
-export class HeroDetail extends React.Component {
-	state = {
-		selectedLane: null
+interface State {
+	selectedLane: Lane;
+}
+
+interface Props {
+	selectedHero: Hero | null;
+	isLoading: boolean;
+	results: Array<any>;
+}
+
+export class HeroDetail extends React.Component<Props, State> {
+	state: State = {
+		selectedLane: selectors.ANY_LANE
 	};
 
 	render() {
@@ -72,23 +83,25 @@ export class HeroDetail extends React.Component {
 		const aggregated = selectors.aggregated(filteredByLane);
 		return (
 			<React.Fragment>
-				<Header>
-					{selectedHero} {isLoading && <Header.LoadingAnimation />}
-				</Header>
+				{selectedHero && (
+					<Header>
+						{selectedHero.name} {isLoading && <LoadingAnimation />}
+					</Header>
+				)}
 				{!isLoading && selectedHero && (
 					<React.Fragment>
-
-						<Section.Header>
+						<SectionHeader>
 							FINAL ITEMS BASED ON TOP {results.length} GUIDES
-						</Section.Header>
+						</SectionHeader>
 						<Tabs
 							items={selectors.distinctLanes(results)}
-							textFn={x => x.text}
-							onClick={x => this.setState({ selectedLane: x.value })}
-							isSelectedFn={x => x.value === selectedLane}
+							textFn={lane => lane.text}
+							onClick={lane => this.setState({ selectedLane: lane })}
+							keyFn={lane => lane.text}
+							isSelectedFn={lane => selectedLane.value === lane.value}
 						/>
 						<Section>
-							<Section.Table>
+							<SectionTable>
 								<thead>
 									<tr>
 										<th>Item</th>
@@ -99,22 +112,22 @@ export class HeroDetail extends React.Component {
 								<tbody>
 									{aggregated.map(item => (
 										<tr key={item.name}>
-											<Section.Column isItem>
+											<SectionColumn isItem>
 												<ItemImage src={item.image} />
-											</Section.Column>
-											<Section.Column>
-												<Section.Link>{item.name}</Section.Link>
-											</Section.Column>
-											<Section.Column>
+											</SectionColumn>
+											<SectionColumn>
+												<SectionLink>{item.name}</SectionLink>
+											</SectionColumn>
+											<SectionColumn>
 												<ProgressBar
 													value={item.count}
 													total={filteredByLane.length}
 												/>
-											</Section.Column>
+											</SectionColumn>
 										</tr>
 									))}
 								</tbody>
-							</Section.Table>
+							</SectionTable>
 						</Section>
 					</React.Fragment>
 				)}
