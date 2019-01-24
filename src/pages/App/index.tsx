@@ -1,30 +1,11 @@
 import React, { Component } from "react";
-import { HeroDetail } from "./components/HeroDetail";
-import { Heroes } from "./components/Heroes";
-import api from "./api";
+import { HeroDetail } from "../../components/HeroDetail";
+import { Heroes } from "../../components/Heroes";
+import api from "../../api";
 import { ThemeProvider } from "emotion-theming";
-import { GuideResponse, HeroResponse, Guide, Hero } from "./types";
-import styled, { dotaBuff } from "./theme";
-
-const Container = styled.div`
-	display: flex;
-	flex-direction: row;
-	height: 100%;
-	background: ${x => x.theme.color.primary};
-`;
-
-const LeftPanel = styled.div`
-	flex-basis: 420px;
-	overflow-y: scroll;
-	height: 100%;
-`;
-
-const RightPanel = styled.div`
-	flex-grow: 2;
-	padding-left: 30px;
-	padding-bottom: 90px;
-	overflow-y: scroll;
-`;
+import { GuideResponse, HeroResponse, Guide, Hero } from "../../types";
+import {Container, LeftPanel, RightPanel } from "./Components";
+import { dotaBuff } from "../../theme";
 
 interface State {
 	guides: {

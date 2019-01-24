@@ -2,10 +2,13 @@
 
 import fetch from "node-fetch";
 import cheerio from "cheerio";
-import { GuideResponse, Guide } from "../types"
-import { Handler, Context, APIGatewayEvent } from 'aws-lambda';
+import { GuideResponse, Guide } from "../types";
+import { Handler, Context, APIGatewayEvent } from "aws-lambda";
 
-export const handler: Handler = async (ev: APIGatewayEvent, context: Context) => {
+export const handler: Handler = async (
+	ev: APIGatewayEvent,
+	context: Context
+) => {
 	const hero =
 		(ev.queryStringParameters &&
 			ev.queryStringParameters.hero &&
@@ -34,12 +37,15 @@ export const handler: Handler = async (ev: APIGatewayEvent, context: Context) =>
 			"Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS
 		}
 	};
-}
+};
 
 const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 	const pageStr = page > 1 ? `?page=${page}` : "";
 	const response = await fetch(
-		`https://www.dotabuff.com/heroes/${heroName.replace("'", "")}/guides${pageStr}`
+		`https://www.dotabuff.com/heroes/${heroName.replace(
+			"'",
+			""
+		)}/guides${pageStr}`
 	);
 	const html = await response.text();
 	const $ = cheerio.load(html);

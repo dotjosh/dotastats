@@ -1,11 +1,14 @@
 "use strict";
 
-import fetch from "node-fetch"; 
+import fetch from "node-fetch";
 import cheerio from "cheerio";
-import { HeroResponse, Hero } from "../types"
-import { Handler, Context, APIGatewayEvent } from 'aws-lambda';
+import { HeroResponse, Hero } from "../types";
+import { Handler, Context, APIGatewayEvent } from "aws-lambda";
 
-export const handler: Handler = async (ev: APIGatewayEvent, context: Context) => {
+export const handler: Handler = async (
+	ev: APIGatewayEvent,
+	context: Context
+) => {
 	const response = await fetch("https://www.dotabuff.com/heroes");
 	const html = await response.text();
 	const $ = cheerio.load(html);
@@ -29,5 +32,4 @@ export const handler: Handler = async (ev: APIGatewayEvent, context: Context) =>
 			"Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS
 		}
 	};
-}; 
-
+};
