@@ -18,6 +18,11 @@ export const SectionHeader = styled.h3`
 	margin: 4px 0 18px 0;
 `;
 
+export const SectionHeaderLink = styled.a`
+color: ${x => x.theme.text.primary};
+	text-decoration: none !important;
+`;
+
 export const SectionTable = styled.table`
 	th {
 		color: ${x => x.theme.text.primary};
@@ -50,4 +55,5 @@ export const ItemImage = styled.img`
 export const SectionLink = styled.a`
 	color: ${x => x.theme.text.link};
 	font-size: 12px;
+	text-decoration: none;
 `;

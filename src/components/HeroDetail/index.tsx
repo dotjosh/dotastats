@@ -11,7 +11,8 @@ import {
 	SectionTable,
 	SectionColumn,
 	SectionLink,
-	ItemImage
+	ItemImage,
+	SectionHeaderLink
 } from "./Components";
 
 interface Props {
@@ -34,11 +35,13 @@ export class HeroDetail extends React.Component<Props, State> {
 		const { selectedLane } = this.state;
 		const filteredByLane = selectors.filteredByLane(results, selectedLane);
 		const aggregated = selectors.aggregated(filteredByLane);
+		const filteredHero = selectedHero ? selectedHero.name.replace(" ", "-").toLowerCase() : "";
+		const dotabuffUrl = `https://www.dotabuff.com/heroes/${filteredHero}`;
 		return (
 			<React.Fragment>
 				{selectedHero && (
 					<Header>
-						{selectedHero.name} {isLoading && <LoadingAnimation />}
+						<SectionHeaderLink href={dotabuffUrl}>{selectedHero.name}</SectionHeaderLink> {isLoading && <LoadingAnimation />}
 					</Header>
 				)}
 				{!isLoading && selectedHero && (
@@ -69,7 +72,7 @@ export class HeroDetail extends React.Component<Props, State> {
 												<ItemImage src={item.image} />
 											</SectionColumn>
 											<SectionColumn>
-												<SectionLink>{item.name}</SectionLink>
+												<SectionLink href={`https://www.dotabuff.com/items/${item.name.replace(" ", "-")}`}>{item.name}</SectionLink>
 											</SectionColumn>
 											<SectionColumn>
 												<ProgressBar
