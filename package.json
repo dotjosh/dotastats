@@ -1,57 +1,64 @@
 {
-  "name": "dotastats",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "lodash": "^4.17.11",
-    "lodash.orderby": "^4.6.0",
-    "lodash.sortby": "^4.7.0",
-    "node-fetch": "^2.3.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.3",
-    "react-spinners": "^0.5.1",
-    "typescript": "^3.2.4"
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-object-assign": "^7.0.0",
-    "@babel/preset-typescript": "^7.1.0",
-    "@emotion/core": "^10.0.6",
-    "@emotion/styled": "^10.0.6",
-    "@types/aws-lambda": "^8.10.17",
-    "@types/cheerio": "^0.22.10",
-    "@types/jest": "^23.3.13",
-    "@types/lodash": "^4.14.120",
-    "@types/node": "^10.12.18",
-    "@types/node-fetch": "^2.1.4",
-    "@types/react": "^16.7.20",
-    "@types/react-dom": "^16.0.11",
-    "babel-loader": "8.0.4",
-    "emotion-theming": "^10.0.6",
-    "http-proxy-middleware": "^0.19.1",
-    "netlify-lambda": "^1.3.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^1.16.1",
-    "run-p": "0.0.0"
-  },
-  "scripts": {
-    "start": "run-p start:**",
-    "start:app": "react-scripts start",
-    "start:lambda": "netlify-lambda serve src/lambda",
-    "build": "run-p build:**",
-    "build:app": "react-scripts build",
-    "build:lambda": "netlify-lambda build src/lambda",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+	"name": "dotastats",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"cheerio": "^1.0.0-rc.2",
+		"lodash": "^4.17.11",
+		"lodash.orderby": "^4.6.0",
+		"lodash.sortby": "^4.7.0",
+		"node-fetch": "^2.3.0",
+		"react": "^16.7.0",
+		"react-dom": "^16.7.0",
+		"react-scripts": "2.1.3",
+		"react-spinners": "^0.5.1",
+		"typescript": "^3.2.4"
+	},
+	"devDependencies": {
+		"@babel/plugin-transform-object-assign": "^7.0.0",
+		"@babel/preset-typescript": "^7.1.0",
+		"@emotion/core": "^10.0.6",
+		"@emotion/styled": "^10.0.6",
+		"@types/aws-lambda": "^8.10.17",
+		"@types/cheerio": "^0.22.10",
+		"@types/jest": "^23.3.13",
+		"@types/lodash": "^4.14.120",
+		"@types/node": "^10.12.18",
+		"@types/node-fetch": "^2.1.4",
+		"@types/react": "^16.7.20",
+		"@types/react-dom": "^16.0.11",
+		"babel-loader": "8.0.4",
+		"emotion-theming": "^10.0.6",
+		"http-proxy-middleware": "^0.19.1",
+		"husky": "^1.3.1",
+		"netlify-lambda": "^1.3.0",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^1.16.1",
+		"pretty-quick": "^1.10.0",
+		"run-p": "0.0.0"
+	},
+	"scripts": {
+		"start": "run-p start:**",
+		"start:app": "react-scripts start",
+		"start:lambda": "netlify-lambda serve src/lambda",
+		"build": "run-p build:**",
+		"build:app": "react-scripts build",
+		"build:lambda": "netlify-lambda build src/lambda",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	],
+	"husky": {
+		"hooks": {
+			"pre-commit": "pretty-quick --staged"
+		}
+	}
 }
