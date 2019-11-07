@@ -35,8 +35,8 @@ export class HeroDetail extends React.Component<Props, State> {
 		const { selectedLane } = this.state;
 		const filteredByLane = selectors.filteredByLane(results, selectedLane);
 		const aggregated = selectors.aggregated(filteredByLane);
-		const filteredHero = selectedHero ? selectedHero.name.replace(" ", "-").toLowerCase() : "";
-		const dotabuffUrl = `https://www.dotabuff.com/heroes/${filteredHero}`;
+		const filteredHero = selectedHero ? selectedHero.name.replace(/ /g, "-").toLowerCase() : "";
+		const dotabuffUrl = `https://www.dotabuff.com/heroes/${filteredHero}/guides`;
 		return (
 			<React.Fragment>
 				{selectedHero && (
