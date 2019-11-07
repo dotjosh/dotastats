@@ -42,10 +42,7 @@ export const handler: Handler = async (
 const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 	const pageStr = page > 1 ? `?page=${page}` : "";
 	const response = await fetch(
-		`https://www.dotabuff.com/heroes/${heroName.replace(
-			"'",
-			""
-		)}/guides${pageStr}`
+		`https://www.dotabuff.com/heroes/${heroName.replace(/ /g, "-").replace("'", "")}/guides${pageStr}`
 	);
 	const html = await response.text();
 	const $ = cheerio.load(html);
