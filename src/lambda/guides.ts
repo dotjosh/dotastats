@@ -68,7 +68,16 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 					image: $(el)
 						.find("img")
 						.attr("src")
-						.replace("/assets", "https://www.dotabuff.com/assets")
+						.replace("/assets", "https://www.dotabuff.com/assets"),
+					timing: timeToSeconds($(el)
+						.parent()
+						.find(".time")
+						.text())
 				}))
 		}));
 };
+
+export function timeToSeconds(val: string) {
+	var time = val.split(":");
+	return (+time[0]) * 60 + (+time[1]);
+}

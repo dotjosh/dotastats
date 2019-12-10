@@ -27,15 +27,17 @@ export function filteredByLane(results: Guide[], lane: Lane) {
 export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 	const aggregated = results
 		.reduce<Item[]>((agg, x) => [...agg, ...x.items], [])
-		.reduce<{ [name: string]: { name: string; count: number; image: string } }>(
+		.reduce<{ [name: string]: { name: string; count: number; timing: number; image: string } }>(
 			(agg, val) => {
 				let existing = agg[val.name];
 				if (existing) {
 					existing.count++;
+					existing.timing += val.timing;
 				} else {
 					agg[val.name] = {
 						name: val.name,
 						count: 1,
+						timing: val.timing,
 						image: val.image
 					};
 				}
@@ -48,6 +50,7 @@ export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 	const aggregatedArray = Object.keys(aggregated).map(key => ({
 		name: key,
 		count: aggregated[key].count,
+		timing: aggregated[key].timing,
 		image: aggregated[key].image
 	}));
 
@@ -57,5 +60,6 @@ export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 interface AggregatedGuideResult {
 	name: string;
 	count: number;
+	timing: number;
 	image: string;
 }

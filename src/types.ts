@@ -19,6 +19,7 @@ export interface Guide {
 export interface Item {
 	name: string;
 	image: string;
+	timing: number;
 }
 
 export interface Lane {

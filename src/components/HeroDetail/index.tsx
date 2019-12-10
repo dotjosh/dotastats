@@ -14,6 +14,7 @@ import {
 	ItemImage,
 	SectionHeaderLink
 } from "./Components";
+import { ItemTiming } from "../ItemTiming";
 
 interface Props {
 	selectedHero: Hero | null;
@@ -62,6 +63,7 @@ export class HeroDetail extends React.Component<Props, State> {
 									<tr>
 										<th>Item</th>
 										<th />
+										<th>Avg Timing</th>
 										<th>Pick Rate</th>
 									</tr>
 								</thead>
@@ -73,6 +75,12 @@ export class HeroDetail extends React.Component<Props, State> {
 											</SectionColumn>
 											<SectionColumn>
 												<SectionLink href={`https://www.dotabuff.com/items/${item.name.replace(" ", "-")}`}>{item.name}</SectionLink>
+											</SectionColumn>
+											<SectionColumn>
+												<ItemTiming
+													value={item.timing}
+													total={filteredByLane.length}
+													/>
 											</SectionColumn>
 											<SectionColumn>
 												<ProgressBar
