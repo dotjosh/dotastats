@@ -3,9 +3,10 @@ import { HeroDetail } from "../../components/HeroDetail";
 import { Heroes } from "../../components/Heroes";
 import api from "../../api";
 import { ThemeProvider } from "emotion-theming";
-import { GuideResponse, HeroResponse, Guide, Hero } from "../../types";
+import { GuideResponse, HeroResponse, Guide, Hero, Lane } from "../../types";
 import {Container, LeftPanel, RightPanel } from "./Components";
 import { dotaBuff } from "../../theme";
+import * as selectors from "../../selectors";
 
 interface State {
 	guides: {
@@ -17,6 +18,7 @@ interface State {
 		isLoading: boolean;
 	};
 	selectedHero: null | Hero;
+	selectedLane: Lane;
 }
 
 const defaultState: State = {
@@ -28,7 +30,8 @@ const defaultState: State = {
 		results: [],
 		isLoading: false
 	},
-	selectedHero: null
+	selectedHero: null,
+	selectedLane: selectors.ANY_LANE
 };
 
 class App extends Component<{}, typeof defaultState> {
@@ -39,7 +42,7 @@ class App extends Component<{}, typeof defaultState> {
 	}
 
 	render() {
-		const { heroes, guides, selectedHero } = this.state;
+		const { heroes, guides, selectedHero, selectedLane } = this.state;
 
 		return (
 			<ThemeProvider theme={dotaBuff}>
@@ -52,7 +55,7 @@ class App extends Component<{}, typeof defaultState> {
 						/>
 					</LeftPanel>
 					<RightPanel>
-						<HeroDetail {...guides} selectedHero={selectedHero} />
+						<HeroDetail {...guides} selectedHero={selectedHero} selectedLane={selectedLane} selectedLaneChanged={this.handleLaneChange} />
 					</RightPanel>
 				</Container>
 			</ThemeProvider>
@@ -82,7 +85,8 @@ class App extends Component<{}, typeof defaultState> {
 				results: [],
 				isLoading: true
 			},
-			selectedHero
+			selectedHero,
+			selectedLane: selectors.ANY_LANE
 		});
 		const onComplete = (response: GuideResponse) =>
 			this.setState({
@@ -93,6 +97,12 @@ class App extends Component<{}, typeof defaultState> {
 			});
 		api.getGuide(selectedHero).then(onComplete);
 	};
+
+	handleLaneChange = (lane: Lane): void => {
+		this.setState({
+			selectedLane: lane
+		});
+	}
 }
 
 export default App;

@@ -20,20 +20,13 @@ interface Props {
 	selectedHero: Hero | null;
 	isLoading: boolean;
 	results: Array<any>;
-}
-
-interface State {
 	selectedLane: Lane;
+	selectedLaneChanged(lane: Lane): void;
 }
 
-export class HeroDetail extends React.Component<Props, State> {
-	state: State = {
-		selectedLane: selectors.ANY_LANE
-	};
-
+export class HeroDetail extends React.Component<Props> {
 	render() {
-		const { selectedHero, isLoading, results } = this.props;
-		const { selectedLane } = this.state;
+		const { selectedHero, isLoading, results, selectedLane, selectedLaneChanged } = this.props;
 		const filteredByLane = selectors.filteredByLane(results, selectedLane);
 		const aggregated = selectors.aggregated(filteredByLane);
 		const filteredHero = selectedHero ? selectedHero.name.replace(/ /g, "-").toLowerCase() : "";
@@ -53,7 +46,7 @@ export class HeroDetail extends React.Component<Props, State> {
 						<Tabs
 							items={selectors.distinctLanes(results)}
 							textFn={lane => lane.text}
-							onClick={lane => this.setState({ selectedLane: lane })}
+							onClick={lane => selectedLaneChanged(lane)}
 							keyFn={lane => lane.text}
 							isSelectedFn={lane => selectedLane.value === lane.value}
 						/>
