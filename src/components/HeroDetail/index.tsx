@@ -79,7 +79,7 @@ export class HeroDetail extends React.Component<Props, State> {
 											<SectionColumn>
 												<ItemTiming
 													value={item.timing}
-													total={filteredByLane.length}
+													total={item.count}
 													/>
 											</SectionColumn>
 											<SectionColumn>
