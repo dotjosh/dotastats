@@ -79,5 +79,8 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 
 export function timeToSeconds(val: string) {
 	var time = val.split(":");
-	return (+time[0]) * 60 + (+time[1]);
+	if (time.length == 2)
+		return (+time[0]) * 60 + (+time[1]);
+	else
+		return (+time[0]) * 60 * 60 + (+time[1]) * 60 + (+time[2]);
 }

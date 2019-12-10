@@ -15,7 +15,13 @@ export function ItemTiming({
 	value: number;
 }): JSX.Element {
 	const avgSeconds = Math.round(value / total);
-	let timing = new Date(avgSeconds * 1000).toISOString().substr(14, 5);
+	let timing = new Date(avgSeconds * 1000).toISOString();
+	if (avgSeconds >= 3600) { // 1 hour
+		timing = timing.substr(11, 8);
+	}
+	else {
+		timing = timing.substr(14, 5);
+	}
 	return (
 		<ItemTimingContainer>{timing}</ItemTimingContainer>
 	);
