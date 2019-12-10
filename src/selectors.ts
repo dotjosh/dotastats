@@ -33,7 +33,7 @@ export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 				if (existing) {
 					existing.count++;
 					existing.timing += val.timing;
-				} else {
+				} else if (val.timing > 0) {
 					agg[val.name] = {
 						name: val.name,
 						count: 1,
