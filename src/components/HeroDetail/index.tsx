@@ -13,7 +13,8 @@ import {
 	SectionLink,
 	ItemImage,
 	SectionHeaderLink,
-	TalentName
+	TalentName,
+	TalentHeader
 } from "./Components";
 import { ItemTiming } from "../ItemTiming";
 
@@ -89,6 +90,9 @@ export class HeroDetail extends React.Component<Props> {
 								</tbody>
 							</SectionTable>
 						</Section>
+						<TalentHeader>
+							TALENT DISTRIBUTION
+						</TalentHeader>
 						<Section>
 						<SectionTable>
 								<tbody>
@@ -96,12 +100,13 @@ export class HeroDetail extends React.Component<Props> {
 										<tr key={talent.talent1Name}>
 											<SectionColumn>
 												<TalentName>{talent.talent1Name}</TalentName>
-												<ProgressBar value={talent.talent1Percent}/>
+												<TalentName>{talent.talent2Name}</TalentName>
 											</SectionColumn>
 											<SectionColumn>
-												<TalentName>{talent.talent2Name}</TalentName>
-												<ProgressBar value={talent.talent2Percent}/>
+												<ProgressBar value={talent.talent1Percent}/>
+												<ProgressBar value={talent.talent2Percent} marginTop={10} />
 											</SectionColumn>
+											
 										</tr>
 									))}
 								</tbody>

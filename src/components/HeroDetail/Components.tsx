@@ -18,6 +18,14 @@ export const SectionHeader = styled.h3`
 	margin: 4px 0 18px 0;
 `;
 
+export const TalentHeader = styled.h3`
+	letter-spacing: 0.3px;
+	color: ${x => x.theme.text.primary};
+	font-weight: normal;
+	font-size: 15px;
+	margin: 20px 0 18px 0;
+`;
+
 export const SectionHeaderLink = styled.a`
 color: ${x => x.theme.text.primary};
 	text-decoration: none !important;
