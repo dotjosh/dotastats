@@ -47,6 +47,12 @@ export const SectionColumn = styled.td<{ isItem?: boolean }>`
 	border: 0;
 `;
 
+export const TalentName = styled.div`
+	font-size: 14px;
+	margin: 10px 0 10px 0;
+	color: ${x => x.theme.text.primary};
+`;
+
 export const ItemImage = styled.img`
 	width: 36px;
 	height: 26px;

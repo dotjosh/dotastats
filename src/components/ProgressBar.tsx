@@ -14,13 +14,13 @@ const InnerBar = styled.div<{ width: string }>`
 `;
 
 export function ProgressBar({
-	total,
+	total = 0,
 	value
 }: {
-	total: number;
+	total?: number;
 	value: number;
 }): JSX.Element {
-	const percentage = Math.round((value / total) * 100) + "%";
+	const percentage = (total > 0 ? Math.round((value / total) * 100) : value) + "%"
 	return (
 		<OuterBar>
 			{percentage}

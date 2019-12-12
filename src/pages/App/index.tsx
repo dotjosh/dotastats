@@ -3,7 +3,7 @@ import { HeroDetail } from "../../components/HeroDetail";
 import { Heroes } from "../../components/Heroes";
 import api from "../../api";
 import { ThemeProvider } from "emotion-theming";
-import { GuideResponse, HeroResponse, Guide, Hero, Lane } from "../../types";
+import { GuideResponse, HeroResponse, Guide, Hero, Lane, Talent, TalentResponse } from "../../types";
 import {Container, LeftPanel, RightPanel } from "./Components";
 import { dotaBuff } from "../../theme";
 import * as selectors from "../../selectors";
@@ -19,6 +19,7 @@ interface State {
 	};
 	selectedHero: null | Hero;
 	selectedLane: Lane;
+	talents: Talent[];
 }
 
 const defaultState: State = {
@@ -31,7 +32,8 @@ const defaultState: State = {
 		isLoading: false
 	},
 	selectedHero: null,
-	selectedLane: selectors.ANY_LANE
+	selectedLane: selectors.ANY_LANE,
+	talents: []
 };
 
 class App extends Component<{}, typeof defaultState> {
@@ -55,7 +57,7 @@ class App extends Component<{}, typeof defaultState> {
 						/>
 					</LeftPanel>
 					<RightPanel>
-						<HeroDetail {...guides} selectedHero={selectedHero} selectedLane={selectedLane} selectedLaneChanged={this.handleLaneChange} />
+						<HeroDetail {...guides} selectedHero={selectedHero} selectedLane={selectedLane} selectedLaneChanged={this.handleLaneChange} talents={this.state.talents} />
 					</RightPanel>
 				</Container>
 			</ThemeProvider>
@@ -95,7 +97,14 @@ class App extends Component<{}, typeof defaultState> {
 					isLoading: false
 				}
 			});
-		api.getGuide(selectedHero).then(onComplete);
+		const getTalents = () =>
+			api.getTalents(selectedHero).then(getTalentsComplete);
+		const getTalentsComplete = (response: TalentResponse) =>
+			this.setState({
+				talents: response.result
+			});
+		
+		api.getGuide(selectedHero).then(onComplete).then(getTalents);
 	};
 
 	handleLaneChange = (lane: Lane): void => {

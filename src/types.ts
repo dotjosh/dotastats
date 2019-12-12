@@ -14,6 +14,7 @@ export interface GuideResponse {
 export interface Guide {
 	lane: string;
 	items: Item[];
+	talents: Talent[];
 }
 
 export interface Item {
@@ -22,7 +23,15 @@ export interface Item {
 	timing: number;
 }
 
+export interface TalentResponse {
+	result: Talent[]
+}
+
 export interface Lane {
 	text: string;
 	value: string | null;
+}
+
+export interface Talent {
+	name: string;
 }

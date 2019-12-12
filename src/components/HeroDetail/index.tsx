@@ -2,7 +2,7 @@ import React from "react";
 import { ProgressBar } from "../ProgressBar";
 import { Tabs } from "../Tabs";
 import * as selectors from "../../selectors";
-import { Hero, Lane } from "../../types";
+import { Hero, Lane, Talent } from "../../types";
 import { LoadingAnimation } from "../LoadingAnimation";
 import {
 	Header,
@@ -12,7 +12,8 @@ import {
 	SectionColumn,
 	SectionLink,
 	ItemImage,
-	SectionHeaderLink
+	SectionHeaderLink,
+	TalentName
 } from "./Components";
 import { ItemTiming } from "../ItemTiming";
 
@@ -22,15 +23,17 @@ interface Props {
 	results: Array<any>;
 	selectedLane: Lane;
 	selectedLaneChanged(lane: Lane): void;
+	talents: Talent[];
 }
 
 export class HeroDetail extends React.Component<Props> {
 	render() {
-		const { selectedHero, isLoading, results, selectedLane, selectedLaneChanged } = this.props;
-		const filteredByLane = selectors.filteredByLane(results, selectedLane);
-		const aggregated = selectors.aggregated(filteredByLane);
+		const { selectedHero, isLoading, results, selectedLane, selectedLaneChanged, talents } = this.props;
+		const itemsFilteredByLane = selectors.filteredByLane(results, selectedLane);
+		const aggregatedItems = selectors.aggregated(itemsFilteredByLane);
 		const filteredHero = selectedHero ? selectedHero.name.replace(/ /g, "-").toLowerCase() : "";
 		const dotabuffUrl = `https://www.dotabuff.com/heroes/${filteredHero}/guides`;
+		const aggregatedTalents = selectors.aggregatedTalents(talents, results)
 		return (
 			<React.Fragment>
 				{selectedHero && (
@@ -61,7 +64,7 @@ export class HeroDetail extends React.Component<Props> {
 									</tr>
 								</thead>
 								<tbody>
-									{aggregated.map(item => (
+									{aggregatedItems.map(item => (
 										<tr key={item.name}>
 											<SectionColumn isItem>
 												<ItemImage src={item.image} />
@@ -78,8 +81,26 @@ export class HeroDetail extends React.Component<Props> {
 											<SectionColumn>
 												<ProgressBar
 													value={item.count}
-													total={filteredByLane.length}
+													total={itemsFilteredByLane.length}
 												/>
+											</SectionColumn>
+										</tr>
+									))}
+								</tbody>
+							</SectionTable>
+						</Section>
+						<Section>
+						<SectionTable>
+								<tbody>
+									{aggregatedTalents.map(talent => (
+										<tr key={talent.talent1Name}>
+											<SectionColumn>
+												<TalentName>{talent.talent1Name}</TalentName>
+												<ProgressBar value={talent.talent1Percent}/>
+											</SectionColumn>
+											<SectionColumn>
+												<TalentName>{talent.talent2Name}</TalentName>
+												<ProgressBar value={talent.talent2Percent}/>
 											</SectionColumn>
 										</tr>
 									))}

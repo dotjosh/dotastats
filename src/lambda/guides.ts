@@ -73,6 +73,15 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 						.parent()
 						.find(".time")
 						.text())
+				})),
+			talents: $(x)
+				.find(".image-skill")
+				.get()
+				.map(el => ({
+					name: $(el)
+					.attr("alt")
+					.replace("Talent: ", ""),
+					level: 1
 				}))
 		}));
 };

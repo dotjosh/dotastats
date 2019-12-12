@@ -1,4 +1,4 @@
-import { HeroResponse, GuideResponse, Hero } from "./types";
+import { HeroResponse, GuideResponse, Hero, TalentResponse } from "./types";
 
 const api = {
 	getHeroes: (): Promise<HeroResponse> =>
@@ -6,7 +6,9 @@ const api = {
 	getGuide: (hero: Hero): Promise<GuideResponse> =>
 		fetch(`/.netlify/functions/guides?hero=${hero.name}`).then(resp =>
 			resp.json()
-		)
+		),
+	getTalents: (hero: Hero): Promise<TalentResponse> =>
+		fetch(`/.netlify/functions/talents?hero=${hero.name}`).then(resp => resp.json())
 };
 
 export default api;
