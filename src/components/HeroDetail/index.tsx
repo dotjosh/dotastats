@@ -34,7 +34,7 @@ export class HeroDetail extends React.Component<Props> {
 		const aggregatedItems = selectors.aggregated(itemsFilteredByLane);
 		const filteredHero = selectedHero ? selectedHero.name.replace(/ /g, "-").toLowerCase() : "";
 		const dotabuffUrl = `https://www.dotabuff.com/heroes/${filteredHero}/guides`;
-		const aggregatedTalents = selectors.aggregatedTalents(talents, results)
+		const aggregatedTalents = selectors.aggregatedTalents(talents, results, selectedLane)
 		return (
 			<React.Fragment>
 				{selectedHero && (
@@ -71,7 +71,7 @@ export class HeroDetail extends React.Component<Props> {
 												<ItemImage src={item.image} />
 											</SectionColumn>
 											<SectionColumn>
-												<SectionLink href={`https://www.dotabuff.com/items/${item.name.replace(" ", "-")}`}>{item.name}</SectionLink>
+												<SectionLink href={`https://www.dotabuff.com/items/${item.name.replace(/ /g, "-")}`}>{item.name}</SectionLink>
 											</SectionColumn>
 											<SectionColumn>
 												<ItemTiming

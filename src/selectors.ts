@@ -57,8 +57,11 @@ export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 	return orderBy(aggregatedArray, ["count"], ["desc"]);
 }
 
-export function aggregatedTalents(talents: Talent[], selectedTalents: Guide[]): AggregatedTalentsResult[] {
+export function aggregatedTalents(talents: Talent[], selectedTalents: Guide[], lane: Lane): AggregatedTalentsResult[] {
 	const aggregated = selectedTalents
+		.filter(
+			x => lane.value === ANY_LANE.value || x.lane === lane.value
+		)
 		.reduce<Talent[]>((agg, x) => [...agg, ...x.talents], [])
 		.reduce<{ [name: string]: { name: string; count: number; } }>(
 			(agg, val) => {
@@ -76,7 +79,7 @@ export function aggregatedTalents(talents: Talent[], selectedTalents: Guide[]): 
 			},
 			{}
 		);
-
+	
 	let lvl25Total = 0;
 	let lvl20Total = 0;
 	let lvl15Total = 0;
@@ -130,9 +133,9 @@ export function aggregatedTalents(talents: Talent[], selectedTalents: Guide[]): 
 		for (var i = 0; i <= 7; i += 2) {
 			result.push({
 				talent1Name: aggregatedCounts[i].name,
-				talent1Percent: aggregatedCounts[i].percent,
+				talent1Percent: aggregatedCounts[i].percent || 0,
 				talent2Name: aggregatedCounts[i+1].name,
-				talent2Percent: aggregatedCounts[i+1].percent
+				talent2Percent: aggregatedCounts[i+1].percent || 0
 			});
 		}
 	}

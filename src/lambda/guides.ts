@@ -64,7 +64,7 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 						.find("a")
 						.attr("href")
 						.substring(7)
-						.replace("-", " "),
+						.replace(/-/g, " "),
 					image: $(el)
 						.find("img")
 						.attr("src")
@@ -77,11 +77,11 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 			talents: $(x)
 				.find(".image-skill")
 				.get()
-				.map(el => ({
+				.map((el, index) => ({
 					name: $(el)
-					.attr("alt")
-					.replace("Talent: ", ""),
-					level: 1
+						.attr("alt")
+						.replace("Talent: ", ""),
+					level: index
 				}))
 		}));
 };
