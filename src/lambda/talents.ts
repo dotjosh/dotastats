@@ -12,7 +12,7 @@ export const handler: Handler = async (
 	const hero =
 		(ev.queryStringParameters &&
 			ev.queryStringParameters.hero &&
-			ev.queryStringParameters.hero.toLowerCase().replace(" ", "-")) ||
+			ev.queryStringParameters.hero.toLowerCase().replace(/ /g, "-")) ||
 		"medusa";
 
 		const response = await fetch(
