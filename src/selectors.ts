@@ -4,23 +4,27 @@ import { Guide, Item, Lane, Talent } from "./types";
 export const ANY_LANE: Lane = { text: "Any Lane", value: null };
 
 export function distinctLanes(results: Guide[]): Lane[] {
+	let distinct = Object.create(null);
 	const result = results
-		.map(x => x.lane)
-		.filter(onlyDistinct)
+		.map(x => ({lane: x.lane, role: x.role}))
+		.filter(x => {
+			var key = x.lane + "|" + x.role;
+			if (!distinct[key]) {
+				distinct[key] = true;
+				return true;
+			}
+		})
 		.map<Lane>(lane => ({
-			text: `${lane} (${results.filter(y => y.lane === lane).length})`,
+			text: `${lane.lane} ${lane.role} (${results.filter(y => y.lane === lane.lane && y.role == lane.role).length})`,
 			value: lane
 		}));
-	result.push(ANY_LANE);
+		result.push(ANY_LANE);
 	return orderBy(result, "text");
-}
-
-const onlyDistinct = <T>(value: T, index: number, self: any): boolean =>
-	self.indexOf(value) === index;
+}	
 
 export function filteredByLane(results: Guide[], lane: Lane) {
 	return results.filter(
-		x => lane.value === ANY_LANE.value || x.lane === lane.value
+		x => lane.value === ANY_LANE.value || (x.lane === (lane.value === null ? null : lane.value.lane) && x.role === (lane.value === null ? null : lane.value.role))
 	);
 }
 
@@ -60,7 +64,7 @@ export function aggregated(results: Guide[]): AggregatedGuideResult[] {
 export function aggregatedTalents(talents: Talent[], selectedTalents: Guide[], lane: Lane): AggregatedTalentsResult[] {
 	const aggregated = selectedTalents
 		.filter(
-			x => lane.value === ANY_LANE.value || x.lane === lane.value
+			x => lane.value === ANY_LANE.value || (x.lane === (lane.value === null ? null : lane.value.lane) && x.role === (lane.value === null ? null : lane.value.role))
 		)
 		.reduce<Talent[]>((agg, x) => [...agg, ...x.talents], [])
 		.reduce<{ [name: string]: { name: string; count: number; } }>(

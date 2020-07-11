@@ -52,7 +52,8 @@ export class HeroDetail extends React.Component<Props> {
 							textFn={lane => lane.text}
 							onClick={lane => selectedLaneChanged(lane)}
 							keyFn={lane => lane.text}
-							isSelectedFn={lane => selectedLane.value === lane.value}
+							isSelectedFn={lane => (selectedLane.value != null && lane.value != null && 
+								selectedLane.value.lane === lane.value.lane && selectedLane.value.role === lane.value.role) || selectedLane.value === lane.value}
 						/>
 						<Section>
 							<SectionTable>

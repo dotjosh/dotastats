@@ -13,6 +13,7 @@ export interface GuideResponse {
 
 export interface Guide {
 	lane: string;
+	role: string;
 	items: Item[];
 	talents: Talent[];
 }
@@ -29,7 +30,12 @@ export interface TalentResponse {
 
 export interface Lane {
 	text: string;
-	value: string | null;
+	value: LaneRole | null;
+}
+
+export interface LaneRole {
+	role: string,
+	lane: string
 }
 
 export interface Talent {

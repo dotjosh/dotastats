@@ -56,6 +56,13 @@ const getPage = async (page: number, heroName: string): Promise<Guide[]> => {
 				.eq(1)
 				.text()
 				.trim(),
+			role: $(x)
+				.find(".role-icon")
+				.parent()
+				.contents()
+				.eq(1)
+				.text()
+				.trim(),
 			items: $(x)
 				.find(".top-right .image-container-medicon")
 				.get()
